@@ -17,16 +17,16 @@ read -p "Enter the branch name: " branch_name
 
 case $choice in
     1)
-        prefix="feat/"
+        prefix="feat"
         ;;
     2)
-        prefix="chore/"
+        prefix="chore"
         ;;
     3)
-        prefix="fix/"
+        prefix="fix"
         ;;
     4)
-        prefix="test/"
+        prefix="test"
         ;;
     *)
         echo "Invalid choice. Exiting."
@@ -34,7 +34,7 @@ case $choice in
         ;;
 esac
 
-full_branch_name="${prefix}${branch_name}"
+full_branch_name="${prefix}/${branch_name}"
 
 git checkout -b "$full_branch_name"
 
