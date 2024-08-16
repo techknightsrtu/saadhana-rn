@@ -2,27 +2,44 @@ name: link pr to issue
 
 on:
   pull_request:
-    types: [opened, edited]
+    types: [opened, edited, reopened]
+  branch_protection_rule:
+    types: [edited]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   link-issue:
     runs-on: ubuntu-latest
     steps:
-      - name: Extract Issue ID from PR Title
-        id: extract
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Extract branch name
+        shell: bash
+        env:
+          BRANCH_NAME: ${{ github.head_ref || github.ref_name }} 
         run: |
-          issue_id=$(echo ${{ github.event.pull_request.title }} | grep -oE '[0-9]+$'')
+          issue_id=$(echo ${{ env.BRANCH_NAME }} | grep -oE '[0-9]+$')
           echo "issue_id=$issue_id" >> $GITHUB_ENV
 
       - name: Check if Issue ID Exists
         id: check
         run: |
           if [ -z "${{ env.issue_id }}" ]; then
-            echo "No issue ID found in PR title."
+            echo "No issue ID found in branch name."
             exit 1
           fi
 
       - name: Update PR Description
         if: steps.check.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          gh pr edit ${{ github.event.pull_request.number }} --body "${{ github.event.pull_request.body }}\nCloses #${{ env.issue_id }}"
+          gh pr edit ${{ github.event.pull_request.number }} --body "$(cat << EOF
+          ${{ github.event.pull_request.body }}
+          Closes #${{ env.issue_id }}
+          EOF
+          )"
