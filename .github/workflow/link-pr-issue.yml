@@ -1,0 +1,28 @@
+name: Link PR to Issue
+
+on:
+  pull_request:
+    types: [opened, edited]
+
+jobs:
+  link-issue:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extract Issue ID from PR Title
+        id: extract
+        run: |
+          issue_id=$(echo ${{ github.event.pull_request.title }} | grep -oP '\(\K[0-9]+(?=\))')
+          echo "issue_id=$issue_id" >> $GITHUB_ENV
+
+      - name: Check if Issue ID Exists
+        id: check
+        run: |
+          if [ -z "${{ env.issue_id }}" ]; then
+            echo "No issue ID found in PR title."
+            exit 1
+          fi
+
+      - name: Update PR Description
+        if: steps.check.outcome == 'success'
+        run: |
+          gh pr edit ${{ github.event.pull_request.number }} --body "${{ github.event.pull_request.body }}\nCloses #${{ env.issue_id }}"
