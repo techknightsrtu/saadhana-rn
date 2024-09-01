@@ -15,6 +15,8 @@ read -p "Your choice: " choice
 
 read -p "Enter the branch name: " branch_name
 
+read -p "Enter the issue id: " issue_id
+
 case $choice in
     1)
         prefix="feat"
@@ -34,7 +36,9 @@ case $choice in
         ;;
 esac
 
-full_branch_name="${prefix}/${branch_name}"
+branch_name_with_hyphen=$(echo "$branch_name" | sed 's/ /-/g')
+
+full_branch_name="${prefix}/${branch_name_with_hyphen}-${issue_id}"
 
 git checkout -b "$full_branch_name"
 
