@@ -311,35 +311,51 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 //   )
 // }
 
-const Stack=createNativeStackNavigator()
-const App = () => {
-  return (
-    <NavigationContainer>
-      <Stack.Navigator  initialRouteName="Login">
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Home" component={Home} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-};
+// const Stack=createNativeStackNavigator()
+// const App = () => {
+//   return (
+//     <NavigationContainer>
+//       <Stack.Navigator  initialRouteName="Login">
+//         <Stack.Screen name="Login" component={Login} />
+//         <Stack.Screen name="Home" component={Home} />
+//       </Stack.Navigator>
+//     </NavigationContainer>
+//   );
+// };
 
-const Login = ({ navigation }) => {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+// const Login = ({ navigation }) => {
+//   return (
+//     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
 
-      <TouchableOpacity style={{flex:1,alignItems:'center',flexDirection:'row'}} onPress={() => navigation.navigate('Home')}>
-        <Image style={{height:30,width:30}} source={require('./components/googlelogo.png')}/>
-        <Text style={{ fontSize: 30, color: 'pink' }}>Go to Home</Text>
-      </TouchableOpacity> 
-    </View>
-  );
-};
-const Home = () => {
-  return (
-    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-      <Text style={{ fontSize: 30, color: 'pink' }}>Home Screen</Text>
-    </View>
-  );
-};
+//       <TouchableOpacity style={{flex:1,alignItems:'center',flexDirection:'row'}} onPress={() => navigation.navigate('Home')}>
+//         <Image style={{height:30,width:30}} source={require('./components/googlelogo.png')}/>
+//         <Text style={{ fontSize: 30, color: 'pink' }}>Go to Home</Text>
+//       </TouchableOpacity> 
+//     </View>
+//   );
+// };
+// const Home = () => {
+//   return (
+//     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+//       <Text style={{ fontSize: 30, color: 'pink' }}>Home Screen</Text>
+//     </View>
+//   );
+// };
 
-export default App;
+// export default App;
+
+// third party api
+
+const App=()=>{
+  const getapidata=async()=>{
+    const url="https://jsonplaceholder.typicode.com/posts/1"
+    let result=await fetch()
+    result=await result.json()
+    console.log(result)
+  }
+  useEffect(()=>{
+    getapidata()
+  },[])
+}
+
+// export default App
