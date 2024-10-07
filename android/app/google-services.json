@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "508173442327",
+    "firebase_url": "https://saadhana-ffdea-default-rtdb.firebaseio.com",
+    "project_id": "saadhana-ffdea",
+    "storage_bucket": "saadhana-ffdea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:508173442327:android:1124a4ab8f2c7dbe102b52",
+        "android_client_info": {
+          "package_name": "com.saadhana"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "508173442327-lhj71409dp8f6lkdbbv354dt9ako3beo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.saadhana",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "508173442327-kb1av3p6bb3rg9fplkrdd6676b1vv160.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBwcrocrI0Hty7W6_2PFHc9zSLe2ooPHrI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "508173442327-kb1av3p6bb3rg9fplkrdd6676b1vv160.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
