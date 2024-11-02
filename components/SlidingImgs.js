@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Dimensions, Image } from 'react-native'
 import Carousel from 'react-native-snap-carousel'
-import styles from './styles/styles_sliding_img.js'
+import styles from './assets/styles/stylesSlidingImg.js'
 
 
 const { width: screenWidth } = Dimensions.get('window')

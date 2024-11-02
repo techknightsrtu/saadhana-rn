@@ -1,59 +1,36 @@
 import React, { useEffect, useState } from 'react';
-import { View, TouchableOpacity, Text, StyleSheet, TextInput, Alert } from 'react-native';
+import { View, TouchableOpacity, Text, StyleSheet, TextInput, Alert, Modal } from 'react-native';
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { ScrollView } from 'react-native-gesture-handler';
 import DateTimePickerModal, { confirmButtonStyles } from 'react-native-modal-datetime-picker';
 import { ServerContainer } from '@react-navigation/native';
-
-
+import { SuperAdminCheck } from '../modules/firebase/SuperAdminCheck';
+import DatePicker from '../component/DatePicker';
 
 
 const Review_saadhana = () => {
 
-    const [currentId,setcurrentId]=useState(null)
-    useEffect(()=>{
+    const [authorization, setauthorization] = useState(false)
 
-        const fetch_id=async(email)=>{
-            try{
-                const querySnapshot=await firestore()
-                .collection('users')
-                .where('email','==',email)
-                .get()
+    useEffect(() => {
+        const checkAuthorization = async () => {
+            const isAuthorized = await SuperAdminCheck();
+            setauthorization(isAuthorized);
+        };
 
-                if(!querySnapshot.empty){
-                    const userdoc=querySnapshot.docs[0]
-                    const userdata=userdoc.data()
-                    setcurrentId(userdata.userId)
+        checkAuthorization();
+    },[])
 
-                }else{
-                    console.log('no user')
-                }
-            }catch(error){
-                console.log(error)
-            }
-        }
-
-        const user = auth().currentUser;
-        const email=user.email
-        fetch_id(email)
-          
-        if(currentId=='QI0vWII3CkGdS3v8GrKY'){
-            setauthorization(true)
-        }
-        
-    })
- 
 
     const StudentComponent = ({ studentname, studentid }) => {
 
         const [studentdata, setstudentdata] = useState(null)
         const [username, setusername] = useState('')
         const [name, setname] = useState('')
-
+        const [modalVisible, setmodalVisible] = useState(false)
 
         useEffect(() => {
-            // console.log('hi') for debugging
             const fetchstudentdata = async () => {
                 try {
                     const user = auth().currentUser
@@ -62,7 +39,7 @@ const Review_saadhana = () => {
                         return
                     }
 
-                    const username = user.displayName
+                    // const username = user.displayName
                     // setusername(username)
 
                     const saadhanaDoc = await firestore()
@@ -98,20 +75,29 @@ const Review_saadhana = () => {
             }
         }, [studentname, selectedDate])
 
-        // const handlereview= async ()=>{
-        //     try {
+        // feedback management 
+        const [Feedback, setFeedback] = useState("")
+        const handleFeedback = () => {
+            // console.log(studentid)
+            // console.log(studentdata.date)
+            try {
+                firestore()
+                    .collection('users')
+                    .doc(studentid)
+                    .collection('Messages')
+                    .doc(studentdata.date)
+                    .set({
+                        feedback: Feedback
+                    })
+                    .then(() => {
+                        setFeedback("")
+                    })
 
-        //         await firestore()
-        //         .collection(studentname)
-        //         .doc(selectedDate)
-        //         .update({
-        //             saadhana_status:'yes'
-        //         })
-        //     }catch(error){
-        //         console.log(error)
-        //     }
-        // }
-
+                setmodalVisible(false)
+            } catch (error) {
+                console.log(error)
+            }
+        }
 
         return (
             <View style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -131,10 +117,17 @@ const Review_saadhana = () => {
                         flexShrink: 1
                     }}>
                         <View style={{ padding: 10 }}>
-                            <Text style={{ color: 'black', textAlign: 'left', fontSize: 16, fontWeight: 'bold' }}>{name}</Text>
-                            <Text style={{ color: '#b0b0b0', textAlign: 'left', fontSize: 10 }}>{studentdata.date}</Text>
+                            <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginHorizontal: 10 }}>
+                                <View style={{ flexDirection: 'column' }}>
+                                    <Text style={{ color: 'black', textAlign: 'left', fontSize: 16, fontWeight: 'bold' }}>{name}</Text>
+                                    <Text style={{ color: '#b0b0b0', textAlign: 'left', fontSize: 10 }}>{studentdata.date}</Text>
+                                </View>
+                                <View style={{ height: 23, width: 35, borderRadius: 15, backgroundColor: '#34206a', justifyContent: 'center', alignItems: 'center' }}>
+                                    <Text style={{ color: 'white', fontSize: 15 }}>{studentdata.score}</Text>
+                                </View>
+                            </View>
 
-                            <View style={{ height: 0, backgroundColor: 'grey', borderWidth: 1, marginVertical: 10 }}></View>
+                            <View style={{ backgroundColor: 'grey', borderWidth: 1, marginVertical: 10 }}></View>
                             {/* <Text style={{color:'black'}}>{JSON.stringify(data)}</Text> */}
 
                             {/* sadana showing */}
@@ -187,10 +180,50 @@ const Review_saadhana = () => {
 
                                 <View style={{ height: 1, width: 290, backgroundColor: 'grey', borderWidth: 1, marginVertical: 10, justifyContent: 'center' }}></View>
 
-                                {/* mark  as reviwed */}
-                                <TouchableOpacity style={styles.reviewbutton} onPress={() => handlereview}>
-                                    <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 14 }}>Mark as Reviewed</Text>
+                                {/* feedback*/}
+                                <TouchableOpacity style={styles.reviewbutton} onPress={() => setmodalVisible(true)}>
+                                    <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 14 }}>Give Feedback</Text>
                                 </TouchableOpacity>
+
+                                {/* modal feedback button */}
+                                <Modal
+                                    animationType='slide'
+                                    transparent={true}
+                                    visible={modalVisible}
+                                    onRequestClose={() => setmodalVisible(false)}
+                                >
+                                    <View style={styles.modalBackground}>
+                                        <View style={styles.modalView}>
+                                            <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 18, marginBottom: 15 }}>Send your Feedback</Text>
+                                            <TextInput
+                                                style={{
+                                                    minHeight: 100,
+                                                    flexShrink: 1,
+                                                    color: 'black',
+                                                    width: 250,
+                                                    fontSize: 15,
+                                                    borderColor: 'grey',
+                                                    borderWidth: 1,
+                                                    padding: 10,
+                                                    marginBottom: 15,
+                                                    borderRadius: 10,
+                                                    textAlignVertical: 'top'
+                                                }} placeholder='type your name here'
+                                                onChangeText={newtext => setFeedback(newtext)}
+                                                defaultValue={Feedback}
+                                                multiline
+                                            />
+                                            <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
+                                                <TouchableOpacity style={styles.add_cancel} onPress={() => setmodalVisible(false)}>
+                                                    <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>Cancel</Text>
+                                                </TouchableOpacity>
+                                                <TouchableOpacity style={styles.add_cancel} onPress={() => handleFeedback()}>
+                                                    <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>Send</Text>
+                                                </TouchableOpacity>
+                                            </View>
+                                        </View>
+                                    </View>
+                                </Modal>
 
                             </View>
 
@@ -212,7 +245,7 @@ const Review_saadhana = () => {
                         flexShrink: 1,
                     }}>
 
-                        <Text style={{ color: 'black', padding: 10 }}> {name} has not filled saadhana of {selectedDate}</Text>
+                        <Text style={{ color: 'black', padding: 10 }}>{name} has not filled saadhana of {selectedDate}</Text>
 
                     </View>
                 )
@@ -234,16 +267,22 @@ const Review_saadhana = () => {
     const [startOfWeek, setStartOfWeek] = useState(null);
     const [endOfWeek, setEndOfWeek] = useState(null);
 
+
     const handleconfirm = (date) => {
-        const formattedDate = date.toLocaleDateString('en-GB', {
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric'
-        }).replace(',', '');
+        // Format the date to yyyy-mm-dd
+        const day = String(date.getDate()).padStart(2, '0'); // Two-digit day
+        const month = String(date.getMonth() + 1).padStart(2, '0'); // Two-digit month
+        const year = date.getFullYear();
+
+        // Combine into ISO format (yyyy-mm-dd)
+        const formattedDate = `${year}-${month}-${day}`;
+
         setSelectedDate(formattedDate);
+        console.log(selectedDate)
         hidedatepicker();
         fetchstudent()
-    }
+    };
+
 
     useEffect(() => {
         const calcweekdays = () => {
@@ -303,7 +342,7 @@ const Review_saadhana = () => {
                 }))
                 setstudent(studentdata)
                 // console.log(studentdata)
-                console.log(student)
+                // console.log(student)
             } else {
                 console.log('no user logedd in')
             }
@@ -320,18 +359,19 @@ const Review_saadhana = () => {
 
     // add email wala part 
     const [email_student, setEmail_student] = useState('')
-    const [id, setid] = useState(null)
-    const [name, setname] = useState(null)
+    const [id, setid] = useState('')
+    const [name, setname] = useState('')
     const [id_counsellor, setid_counsellor] = useState('')
     const [name_counsellor, setname_counsellor] = useState('')
     const [errormsg, seterrormsg] = useState('')
     const [errormsg_counsellor, seterrormsg_counsellor] = useState('')
-    const [authorization, setauthorization] = useState(false)
-    const [email_student_counsellor,set_email_student_counsellor]=useState('')
+    
+    const [email_student_counsellor, set_email_student_counsellor] = useState('')
 
     // useEffect(()=>{
-        
+
     // },[])
+
 
     const cancel_email = () => {
         setEmail_student('')
@@ -353,17 +393,20 @@ const Review_saadhana = () => {
         }
 
         // first finding under user and taking all data
-       
+
         try {
             const usercollection = firestore().collection('users')
             const querySnapshot = await usercollection.where('email', '==', email_student).get()
 
+            let studentId = null
+            let studentName = null
+
             if (!querySnapshot.empty) {
                 querySnapshot.forEach((documentsnapShot) => {
                     const data = documentsnapShot.data()
-                    setid(data.userId)
-                    setname(data.name)
-                    console.log(data)
+                    studentId = data.userId
+                    studentName = data.name
+                    console.log(id)
 
                 })
             } else {
@@ -371,37 +414,36 @@ const Review_saadhana = () => {
                 Alert.alert('Error', 'No user found with this email.')
                 return
             }
-        } catch (error) {
-            console.log(error)
-        }
 
-        // setting id,name under that counsellor
-        try {
             const counselorCollection = firestore().collection(collectionname)
             const studentDoc = await counselorCollection.get()
-            let studentexist=false
-            
-            studentDoc.forEach((doc)=>{
-                const studentdata=doc.data()
-                if (studentdata.id===id){
-                    
-                    studentexist=true
+            let studentexist = false
+
+            studentDoc.forEach((doc) => {
+                const studentdata = doc.data()
+                console.log(studentdata.id)
+                // console.log(id)
+                console.log('hi')
+
+                if (studentdata.id === studentId) {
+                    studentexist = true
+                    // console.log(studentexist)
                 }
             })
-            
+
             if (studentexist) {
                 Alert.alert('This student is already under you.')
                 setEmail_student('')
 
             } else {
                 await counselorCollection.doc(id).set({
-                    id: id,
-                    name: name
+                    id: studentId,
+                    name: studentName
                 })
 
                 Alert.alert('Success', 'student is added under you.')
                 setEmail_student('')
-                
+
             }
         } catch (error) {
             console.log(error)
@@ -414,7 +456,7 @@ const Review_saadhana = () => {
         set_email_student_counsellor('')
     }
 
-    const add_student_counsellor=async()=>{
+    const add_student_counsellor = async () => {
 
         // checking for null input
         if (email_student_counsellor.trim() === '') {
@@ -423,6 +465,9 @@ const Review_saadhana = () => {
         } else {
             seterrormsg_counsellor('')
         }
+
+        let counsellorId = null
+        let counsellorName = null
 
         // first finding under user and taking all data
         try {
@@ -433,54 +478,46 @@ const Review_saadhana = () => {
             if (!querySnapshot.empty) {
                 querySnapshot.forEach((documentsnapShot) => {
                     const data = documentsnapShot.data()
-                    setid_counsellor(data.userId)
-                    setname_counsellor(data.name)
-                    console.log(id_counsellor)
-                    
+                    counsellorId = data.userId
+                    counsellorName = data.name
+                    // console.log(id_counsellor)
+
                 })
             } else {
                 console.log('no such user')
                 Alert.alert('Error', 'No user found with this email.')
                 return
             }
-        } catch (error) {
-            console.log(error)
-        }
 
-       
-
-        // setting id,name under that counsellor
-        try {
             const counselorCollection = firestore().collection('Counsellor')
             const studentDoc = await counselorCollection.get()
-            let studentexist=false
-            
-            studentDoc.forEach((doc)=>{
-                const studentdata=doc.data()
-                if (studentdata.id===id_counsellor){
-                    studentexist=true
+            let studentexist = false
+
+            studentDoc.forEach((doc) => {
+                const studentdata = doc.data()
+                if (studentdata.id === counsellorId) {
+                    studentexist = true
                 }
             })
-            
+
             if (studentexist) {
                 Alert.alert('This student is already counsellor.')
                 set_email_student_counsellor('')
 
             } else {
                 await counselorCollection.doc(id_counsellor).set({
-                    id: id_counsellor,
-                    name: name_counsellor
+                    id: counsellorId,
+                    name: counsellorName
                 })
 
                 Alert.alert('Success', 'student is now a counsellor')
                 set_email_student_counsellor('')
-                
+
             }
         } catch (error) {
             console.log(error)
         }
-
-    
+        // setting id,name under that counsellor    
     }
 
     return (
@@ -511,27 +548,7 @@ const Review_saadhana = () => {
 
                         <View>
                             {/* date selection */}
-
-                            <View style={[{ flexDirection: 'row' }, styles.boxes]}>
-                                <View style={{ flexDirection: 'column' }}>
-                                    <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 17 }}>Saadhana Date </Text>
-                                    <Text style={{ color: '#7f7f7f', fontSize: 13 }}>from {monday} to {sunday} </Text>
-                                </View>
-
-                                <TouchableOpacity style={{ flexDirection: 'column' }} onPress={showdatepicker}  >
-                                    <Text style={{ color: 'blue', fontWeight: 'bold', fontSize: 15 }}>
-                                        {selectedDate ? selectedDate : 'Select a Date'}
-                                    </Text>
-                                </TouchableOpacity>
-                                <DateTimePickerModal
-                                    isVisible={isDatePickerVisible}
-                                    mode="date"
-                                    onConfirm={handleconfirm}
-                                    onCancel={hidedatepicker}
-                                    minimumDate={startOfWeek}
-                                    maximumDate={endOfWeek}
-                                />
-                            </View>
+                            <DatePicker selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
 
                             {student.length > 0 ? (
                                 student.map((student) => (
@@ -553,7 +570,7 @@ const Review_saadhana = () => {
 
 
                     {selectedOption === 'Add Members' && (
-                      
+
 
                         <View style={{ flex: 1 }}>
 
@@ -587,7 +604,7 @@ const Review_saadhana = () => {
 
                             {
                                 authorization ? (
-                                    <View style={[styles.boxes, { flex: 1, marginTop: 20,marginBottom:20 }]}>
+                                    <View style={[styles.boxes, { flex: 1, marginTop: 20, marginBottom: 20 }]}>
                                         <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 18, }}>Add Counsellor</Text>
                                         <Text style={{ color: '#7f7f7f', fontSize: 12 }}>Add Counsellor that can lead ISKCON!</Text>
 
@@ -707,7 +724,8 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginTop: 30,
         alignItems: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
+
     },
     textonbox: {
         zIndex: 1,
@@ -740,6 +758,35 @@ const styles = StyleSheet.create({
         padding: 10,
         marginTop: 15,
         margin: 5
+    },
+    modalBackground: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'transparent',
+
+
+    },
+    modalView: {
+        width: 300,
+        height: 250,
+        backgroundColor: 'white',
+        borderRadius: 20,
+        padding: 20,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 4,
+        elevation: 5
+    },
+    comment_input: {
+        height: 140,
+        borderWidth: 1,
+        borderColor: '#9e9e9e',
+        borderRadius: 5,
+        marginTop: 10,
+        fontSize: 17
     }
 
 
