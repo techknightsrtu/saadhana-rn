@@ -73,7 +73,8 @@ const styles = StyleSheet.create({
     padding: 12,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    position: 'relative'
+    position: 'relative',
+    marginVertical:10
   },
   dotStyle: {
     backgroundColor: 'rgba(255, 255, 255,0.8)',

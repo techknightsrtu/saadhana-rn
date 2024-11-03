@@ -6,7 +6,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { LogBox } from 'react-native';
 import AppNavigator from './components/navigation/AppNavigator';
 
-// LogBox.ignoreAllLogs();  
+LogBox.ignoreAllLogs();  
 
 const App = () => {
   useEffect(() => {

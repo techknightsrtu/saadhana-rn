@@ -1,13 +1,13 @@
 import { createStackNavigator } from "@react-navigation/stack"
 import Home from '../screens/Home';
 import Profile from '../screens/Profile';
-import Record_saadhana from '../screens/Record_saadhana';
+import Record_saadhana from '../screens/RecordSaadhana';
 import KKB from '../screens/KKB';
 import Kirtan from '../screens/Kirtan';
 import Katha from '../screens/Katha';
 import Books from '../screens/Books';
-import Review_saadhana from '../screens/Review_saadhana';
-import Saadhana_report from '../Saadhana_report';
+import Review_saadhana from '../screens/ReviewSaadhana';
+import Saadhana_report from '../screens/SaadhanaReport';
 import Login from "../screens/Login";
 
  

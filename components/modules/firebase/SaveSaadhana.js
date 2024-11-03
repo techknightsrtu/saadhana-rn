@@ -15,7 +15,7 @@ export const handlesaadhana = async (selectedDate, waketime, sleeptime, dinner, 
         return
     }
     console.log("Values to check: ", { selectedDate, waketime, sleeptime, dinner, selectedoptiondaysleep, selectedoptionmorning, japa, selectedoptionbookreading, selectedoptionlecturehearing, comment });
-
+    console.log(FIRESTORE_COLLECTION_PATHS)
 
     if ( selectedDate.trim() === '' ||
     (waketime || '').trim() === '' ||  // Provide a fallback

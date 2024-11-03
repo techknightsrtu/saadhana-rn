@@ -37,8 +37,9 @@ const Home = ({ navigation }) => {
   useEffect(() => {
     checkuseraccess(setshowbutton)
     fetchuserinfo(setuserinfo_).then(()=>setisloading(false))
-    fetchFeedback(setfeedback)
+    fetchFeedback({setfeedback})
   }, [])
+  // console.log(feedback)
 
 
 
@@ -97,11 +98,11 @@ const Home = ({ navigation }) => {
 
               <View style={styles.popup}>
 
+                <Text style={styles.popupText}>Your Messages!</Text>
                 {feedback.length > 0 ? (
                   feedback.map((message) => (
 
                     <View key={message.id}>
-                      <Text style={styles.popupText}>Your Messages!</Text>
                       <View style={styles.msg_box}>
                         <Text style={{ color: 'black', fontSize: 18, flex: 1 }}>{message.feedback}</Text>
                         <View style={{ position: 'absolute', bottom: 5, right: 10 }}>

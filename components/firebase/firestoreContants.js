@@ -1,3 +1,3 @@
 export const FIRESTORE_COLLECTION_PATHS = {
-    'Saadhana' : 'saadhana' 
+    'Saadhana' : 'Saadhana' 
 }

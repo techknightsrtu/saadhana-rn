@@ -53,6 +53,7 @@ const DatePicker=({selectedDate,setSelectedDate})=>{
     const hidedatepicker = () => {
         setDatePickerVisibility(false)
     }
+    
     return(
         <View style={[{ flexDirection: 'row' }, styles.boxes]}>
         <View style={{ flexDirection: 'column' }}>
