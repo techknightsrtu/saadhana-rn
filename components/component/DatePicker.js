@@ -27,6 +27,7 @@ const DatePicker=({selectedDate,setSelectedDate})=>{
 
             setStartOfWeek(currentmonday);
             setEndOfWeek(currentsunday);
+
         }
 
         calcweekdays()

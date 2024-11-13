@@ -1,77 +1,38 @@
 import { useEffect, useState } from 'react'
 import { Button, StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native'
-import firestore from '@react-native-firebase/firestore'
-import { ScrollView } from 'react-native-gesture-handler'
-import DateTimePickerModal, { confirmButtonStyles } from 'react-native-modal-datetime-picker';
-import DateTimePicker from 'react-native-modal-datetime-picker';
-import auth from '@react-native-firebase/auth';
-import { serializer } from '../../metro.config';
+import { FlatList, ScrollView } from 'react-native-gesture-handler'
 import styles from '../assets/styles/StylesRecordSaadhana';
-import DatePicker from '../component/DatePicker';
-import WakeTimeBox from '../component/RecordSaadhanaComponents/WakeTimeBox';
-import SleepTimeBox from '../component/RecordSaadhanaComponents/SleepTimeBox';
-import DinnerTimeBox from '../component/RecordSaadhanaComponents/DinnerTimeBox'
-import DaySleepBox from '../component/RecordSaadhanaComponents/DaySleepBox';
-import MorningProgrameBox from '../component/RecordSaadhanaComponents/MorningProgrameBox';
-import JapaBox from '../component/RecordSaadhanaComponents/JapaBox';
-import BookReadingBox from '../component/RecordSaadhanaComponents/BookReadingBox';
-import LectureHearingBox from '../component/RecordSaadhanaComponents/LectureHearingBox';
-import CommentBox from '../component/RecordSaadhanaComponents/CommentBox';
-import { handlesaadhana } from '../modules/firebase/SaveSaadhana';
+import { CurrWeekDays } from '../component/RecordSaadhanaComponents/CurrWeekDates';
+import { fetchSaadhanaDates } from '../modules/firebase/fetchSaadhanaDates';
+import { DateCompare } from '../modules/SaadhanaStatus/DateCompare';
 
-const Record_saadhana = () => {
+const Record_saadhana = ({ navigation }) => {
     // const [text, settext] = useState('')
 
-    const [selectedDate, setSelectedDate] = useState(null);
+    const [WeekDays, setWeekDays] = useState([])
+    const [SaadhanaDates, setSaadhanaDates] = useState([])
+    const [SaadhanaStatus, setSaadhanaStatus] = useState([])
+    EditArray = Array(7).fill('Edit')
 
-    const [isboxselected, setisboxselected] = useState(false)
-    // blank const
-    const [waketime, setwaketime] = useState('')
-    const [sleeptime, setsleeptime] = useState('')
-    const [dinner, setdinner] = useState('')
+    useEffect(() => {
+        const weekDateExtract = async () => {
+            const weekDates = await CurrWeekDays()
+            setWeekDays(weekDates)
 
-    const [WakePoint, setWakePoint] = useState(0)
-    const [SleepPoint, setSleepPoint] = useState(0)
-    const [DinnerPoint, SetDinnerPoint] = useState(0)
+            const saadhanaDates = await fetchSaadhanaDates()
+            setSaadhanaDates(saadhanaDates)
+        }
 
-    // const [selectedtime,setselectedtime]=useState(new Date())
+        weekDateExtract()
+    }, [])
 
-    // points 
-    const [points, setpoints] = useState(0)
+    useEffect(() => {
+        if (WeekDays.length > 0 && SaadhanaDates.length > 0) {
+            setSaadhanaStatus(DateCompare(WeekDays, SaadhanaDates))
+        }
+    }, [SaadhanaDates])
 
-    // for day sleep
-    const [selectedoptiondaysleep, setselectedoptiondaysleep] = useState(null)
-    const [DaySleepPoints, setDaySleepPoints] = useState(0);
-
-
-    // for morning program
-    const [selectedoptionmorning, setselectedoptionmorning] = useState(null)
-    const [MorningProgramPoints, setMorningProgramPoints] = useState(0);
-
-
-    // for no. of japa
-    const [japa, setjapa] = useState('')
-    const [japaPoints, setJapaPoints] = useState(0); // State to store Japa points
-
-
-    // for book reading
-    const [selectedoptionbookreading, setselectedoptionbookreading] = useState(null)
-    const [bookReadingPoints, setBookReadingPoints] = useState(0);
-
-    // for lecture hearing
-    const [selectedoptionlecturehearing, setselectedoptionlecturehearing] = useState(null)
-    const [lectureHearingPoints, setLectureHearingPoints] = useState(0);
-
-    // for comment
-    const [comment, setcomment] = useState('Hare Krishna ! All glories to Srila Prabhupada')
-
-    // error msg
-    const [errormsg, seterrormsg] = useState('')
-
-    // saadhana_status
-    const [saadhana_status, setsaadhana_status] = useState('no')
-
-    console.log(WakePoint , SleepPoint , DinnerPoint , DaySleepPoints , MorningProgramPoints, japaPoints, bookReadingPoints, lectureHearingPoints)
+    
 
     return (
         <View style={{ flex: 1, backgroundColor: '#e59479' }}>
@@ -99,70 +60,49 @@ const Record_saadhana = () => {
                             श्लोक 17</Text>
                     </View>
 
-                    {/* submition boxes */}
-
-
-                    {/* date box */}
-                    <DatePicker selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
-
-
-                    {/* routine check */}
-                    <View style={styles.boxes}>
+                    <View style={[{ flexDirection: 'row' }, styles.boxes]}>
                         <View style={{ flexDirection: 'column' }}>
-                            <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 17 }}>Routine Check </Text>
-                            <Text style={{ color: '#7f7f7f', fontSize: 12, marginBottom: 5 }}>Record your sleeping and eating cycle</Text>
+                            <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 17 }}>Saadhana Data </Text>
+                            <Text style={{ color: '#7f7f7f', fontSize: 13 }}>from {WeekDays[0]} to {WeekDays[6]} </Text>
                         </View>
-
-                        <View style={{ flex: 1, position: 'relative', flexDirection: 'row' }}>
-
-                            {/* wake up time, ws-> wake sleep text */}
-                            <WakeTimeBox waketime={waketime} setwaketime={setwaketime} setWakePoint={setWakePoint} />
-
-                            {/* sleeptime */}
-                            <SleepTimeBox sleeptime={sleeptime} setsleeptime={setsleeptime} setSleepPoint={setSleepPoint} />
-
-                        </View>
-
-                        {/* dinner box */}
-                        <DinnerTimeBox dinner={dinner} setdinner={setdinner} SetDinnerPoint={SetDinnerPoint} />
 
                     </View>
 
-                    {/* day sleep */}
-                    <DaySleepBox selectedoptiondaysleep={selectedoptiondaysleep} setselectedoptiondaysleep={setselectedoptiondaysleep} setDaySleepPoints={setDaySleepPoints} />
+                    <View style={styles.boxes}>
 
-                    {/* morning program */}
-                    <MorningProgrameBox selectedoptionmorning={selectedoptionmorning} setselectedoptionmorning={setselectedoptionmorning} setMorningProgramPoints={setMorningProgramPoints} />
+                        <View style={{ flexDirection: 'row', justifyContent: 'space-between', padding: 4 }}>
+                            <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 17 }}>Date</Text>
+                            <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 17, right: 120 }}>Status</Text>
+                        </View>
 
-                    {/* japa */}
-                    <JapaBox japa={japa} setjapa={setjapa} setJapaPoints={setJapaPoints} />
+                        {/* <View style={{flexDirection:'row',justifyContent:'space-between',flexWrap:'wrap'}}>
+                                <Text style={{color:'black'}}>{WeekDays}</Text>
+                            </View> */}
+                        <View style={{ flexDirection: 'row' }}>
+                            <FlatList
 
-                    {/* book reading */}
-                    <BookReadingBox selectedoptionbookreading={selectedoptionbookreading} setselectedoptionbookreading={setselectedoptionbookreading} setBookReadingPoints={setBookReadingPoints} />
+                                data={WeekDays}
+                                renderItem={({ item }) => <Text style={styles.dates}>{item}</Text>}
+                            />
 
-
-                    {/* lecture hearing */}
-                    <LectureHearingBox selectedoptionlecturehearing={selectedoptionlecturehearing} setselectedoptionlecturehearing={setselectedoptionlecturehearing} setLectureHearingPoints={setLectureHearingPoints} />
-
-                    {/* comments */}
-                    <CommentBox comment={comment} setcomment={setcomment} />
-
-
-                    {/* save saadhana */}
-
-                    <TouchableOpacity style={styles.savebutton} onPress={()=>handlesaadhana(selectedDate, waketime, sleeptime, dinner, selectedoptiondaysleep, selectedoptionmorning, japa, selectedoptionbookreading, selectedoptionlecturehearing, comment,WakePoint , SleepPoint , DinnerPoint , DaySleepPoints , MorningProgramPoints, japaPoints, bookReadingPoints, lectureHearingPoints  , seterrormsg,setSelectedDate,setwaketime,setsleeptime,setdinner,setselectedoptiondaysleep,setselectedoptionmorning,setjapa,setselectedoptionbookreading,setselectedoptionlecturehearing,setcomment)}>
-                        {errormsg ? <Text style={{ color: 'red', fontSize: 15, backgroundColor: 'white' }}>{errormsg}</Text> : null}
-                        <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'white' }}>Save Saadhana</Text>
-                    </TouchableOpacity>
-
+                            <FlatList
+                                data={SaadhanaStatus}
+                                renderItem={({ item }) => <Text style={styles.dates}>{item}</Text>}
+                            />
+                            <FlatList
+                                style={{ left: 15 }}
+                                data={EditArray}
+                                renderItem={({ item,index }) => <TouchableOpacity onPress={() => { navigation.navigate('RecordComSaadhana', {selectedDate:WeekDays[index]}) }} >
+                                    <Text style={styles.edit}>{item}</Text>
+                                </TouchableOpacity>
+                                }
+                            />
+                        </View>
+                    </View>
                 </ScrollView>
-
-
             </View>
-
         </View>
     )
 }
-
 
 export default Record_saadhana

@@ -18,12 +18,12 @@ export const fetchData = async ({setdata,setlabels}) => {
 
                 snapshot.forEach(doc => {
                     const saadhanaData = doc.data();
-                    const formattedDate = new Date(doc.id).toISOString().split('T')[0]; // Output: yyyy-mm-dd
-
+                    // const formattedDate = new Date(doc.id).toISOString().split('T')[0]; // Output: yyyy-mm-dd
+                    const formattedDate=doc.id
 
                     if (saadhanaData && saadhanaData.score !== undefined && !isNaN(saadhanaData.score)) {
-                        console.log('Formatted Date:', formattedDate);
-                        console.log('Score:', saadhanaData.score);
+                        // console.log('Formatted Date:', formattedDate);
+                        // console.log('Score:', saadhanaData.score);
 
                         dates.push(formattedDate);
                         scores.push(Number(saadhanaData.score));
@@ -33,8 +33,8 @@ export const fetchData = async ({setdata,setlabels}) => {
                 });
 
                 if (dates.length > 0 && scores.length > 0) {
-                    setlabels([...dates]);  // Update state with dates
-                    setdata([...scores]);  // Update state with scores
+                    setlabels([...dates]);  
+                    setdata([...scores]); 
                 }
             }
         } else {

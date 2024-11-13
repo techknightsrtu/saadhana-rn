@@ -1,9 +1,10 @@
 import auth from '@react-native-firebase/auth';
-import {Alert} from 'react-native'
+import { Alert } from 'react-native'
 import firestore from '@react-native-firebase/firestore'
 import { FIRESTORE_COLLECTION_PATHS } from '../../firebase/firestoreContants'
+import { useEffect } from 'react';
 
-export const handlesaadhana = async (selectedDate, waketime, sleeptime, dinner, selectedoptiondaysleep, selectedoptionmorning, japa, selectedoptionbookreading, selectedoptionlecturehearing, comment,WakePoint , SleepPoint , DinnerPoint , DaySleepPoints , MorningProgramPoints, japaPoints, bookReadingPoints, lectureHearingPoints  , seterrormsg,setSelectedDate,setwaketime,setsleeptime,setdinner,setselectedoptiondaysleep,setselectedoptionmorning,setjapa,setselectedoptionbookreading,setselectedoptionlecturehearing,setcomment) => {
+export const handlesaadhana = async (selectedDate, waketime, sleeptime, dinner, selectedoptiondaysleep, selectedoptionmorning, japa, selectedoptionbookreading, selectedoptionlecturehearing, comment, WakePoint, SleepPoint, DinnerPoint, DaySleepPoints, MorningProgramPoints, japaPoints, bookReadingPoints, lectureHearingPoints, seterrormsg, setwaketime, setsleeptime, setdinner, setselectedoptiondaysleep, setselectedoptionmorning, setjapa, setselectedoptionbookreading, setselectedoptionlecturehearing, setcomment) => {
 
     const total_points = WakePoint + SleepPoint + DinnerPoint + DaySleepPoints + bookReadingPoints + lectureHearingPoints + MorningProgramPoints + japaPoints
 
@@ -14,20 +15,26 @@ export const handlesaadhana = async (selectedDate, waketime, sleeptime, dinner, 
         console.error('no user')
         return
     }
-    console.log("Values to check: ", { selectedDate, waketime, sleeptime, dinner, selectedoptiondaysleep, selectedoptionmorning, japa, selectedoptionbookreading, selectedoptionlecturehearing, comment });
-    console.log(FIRESTORE_COLLECTION_PATHS)
+    console.log(selectedDate)
+    const convertDateFormat = (date) => {
+        const [day, month, year] = date.split('-');  // Split the date by '-'
+        return `${year}-${month}-${day}`;  // Return the formatted date
+    };
 
-    if ( selectedDate.trim() === '' ||
-    (waketime || '').trim() === '' ||  // Provide a fallback
-    (sleeptime || '').trim() === '' ||
-    (dinner || '').trim() === '' ||
-    (selectedoptiondaysleep || '').trim() === '' ||
-    (selectedoptionmorning || '').trim() === '' ||
-    (japa || '').trim() === '' ||
-    (selectedoptionbookreading || '').trim() === '' ||
-    (selectedoptionlecturehearing || '').trim() === '' ||
-    (comment || '').trim() === '')  
-    {
+    // Call convertDateFormat directly to format the selectedDate
+    const formattedDate = convertDateFormat(selectedDate);
+    console.log(formattedDate)
+
+    if (selectedDate.trim() === '' ||
+        (waketime || '').trim() === '' ||  // Provide a fallback
+        (sleeptime || '').trim() === '' ||
+        (dinner || '').trim() === '' ||
+        (selectedoptiondaysleep || '').trim() === '' ||
+        (selectedoptionmorning || '').trim() === '' ||
+        (japa || '').trim() === '' ||
+        (selectedoptionbookreading || '').trim() === '' ||
+        (selectedoptionlecturehearing || '').trim() === '' ||
+        (comment || '').trim() === '') {
         seterrormsg('All field are required')
     } else {
         seterrormsg('')
@@ -55,7 +62,7 @@ export const handlesaadhana = async (selectedDate, waketime, sleeptime, dinner, 
             docRef.collection(FIRESTORE_COLLECTION_PATHS.Saadhana)
                 .doc(selectedDate)
                 .set({
-                    date: selectedDate,
+                    date: formattedDate,
                     wake_up_time: waketime,
                     sleep_time: sleeptime,
                     dinner_time: dinner,
@@ -69,7 +76,6 @@ export const handlesaadhana = async (selectedDate, waketime, sleeptime, dinner, 
 
                 })
                 .then(() => {
-                    setSelectedDate('')
                     setwaketime('')
                     setsleeptime('')
                     setdinner('')

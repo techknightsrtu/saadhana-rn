@@ -1,7 +1,7 @@
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
-export const fetchStudentSaadhana=async({studentid,selectedDate,setname,setstudentdata})=>{
+export const fetchStudentSaadhana=async({studentid,selectedDate,setstudentdata})=>{
     
         try {
             const user = auth().currentUser
@@ -23,12 +23,7 @@ export const fetchStudentSaadhana=async({studentid,selectedDate,setname,setstude
             // console.log(saadhanaDoc.data())
 
             // fetching name using studentid 
-            const StudentDoc = await firestore()
-                .collection('users')
-                .doc(studentid)
-                .get()
-            const studentname = StudentDoc.data().name
-            setname(studentname)
+            
 
             if (saadhanaDoc.exists) {
                 setstudentdata(saadhanaDoc.data())

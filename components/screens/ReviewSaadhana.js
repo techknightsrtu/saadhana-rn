@@ -12,7 +12,7 @@ import styles from '../assets/styles/StylesReviewSaadhana'
 import { add_student } from '../modules/firebase/setStudentChild';
 import { add_student_counsellor } from '../modules/firebase/setStudentCounsellor';
 import { fetchStudentSaadhana } from '../modules/firebase/fetchStudentSaadhana';
-
+import { fetchNameUnderStudent } from '../modules/firebase/fetchNameUnderStudent';
 import SaadhanaBoxes from '../component/ReviewSaadhana/SaadhanaBoxes';
 
 const Review_saadhana = () => {
@@ -39,12 +39,14 @@ const Review_saadhana = () => {
 
         useEffect(() => {
 
-            // console.log(studentname)
+            console.log(studentid)
+            
+            setname(fetchNameUnderStudent({studentid}))
             if (studentname && selectedDate) {
-                fetchStudentSaadhana({ studentid, selectedDate, setname, setstudentdata })
+                fetchStudentSaadhana({ studentid, selectedDate, setstudentdata })
             }
         }, [studentname, selectedDate])
-
+        console.log(name)
         return(
             <SaadhanaBoxes studentdata={studentdata} name={name} setmodalVisible={setmodalVisible} modalVisible={modalVisible} studentid={studentid} selectedDate={selectedDate} />
         )

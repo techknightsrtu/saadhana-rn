@@ -69,6 +69,18 @@ const styles = StyleSheet.create({
         elevation: 1,
         marginBottom: 50
 
+    },
+    dates:{
+        color:'grey',
+        marginVertical:5,
+        fontSize:14
+    },
+    edit:{
+        color:'blue',
+        marginVertical:5,
+        fontSize:14,
+        fontWeight:'bold',
+        textDecorationLine:'underline'
     }
 
 

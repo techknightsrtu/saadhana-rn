@@ -9,6 +9,7 @@ import Books from '../screens/Books';
 import Review_saadhana from '../screens/ReviewSaadhana';
 import Saadhana_report from '../screens/SaadhanaReport';
 import Login from "../screens/Login";
+import RecordComSaadhana from "../screens/RecordComSaadhana";
 
  
 
@@ -38,6 +39,16 @@ const AppNavigator=()=>(
           headerTitleAlign:'center'
         }} 
         name="Record_saadhana" component={Record_saadhana}/>
+        
+        <Stack.Screen options={{
+          headerTitle: 'Saadhana Card',
+          headerStyle: { backgroundColor: '#e59479' },
+          headerTintColor:'white',
+          headerShadowVisible: false,
+          headerTitleStyle:{fontSize:20},
+          headerTitleAlign:'center'
+        }} 
+        name="RecordComSaadhana" component={RecordComSaadhana}/>
         
         <Stack.Screen options={{
           headerStyle:{backgroundColor:'#f1fdf1'},
