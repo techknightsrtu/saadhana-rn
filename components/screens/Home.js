@@ -16,7 +16,6 @@ import usefetchdata from '../modules/firebase/getImgfromFirebase'
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import Version from '../component/footer';
 import auth from '@react-native-firebase/auth';
-import { fetchFeedback } from '../modules/firebase/fetchfeedback';
 import { fetchuserinfo } from '../modules/asyncStorage/fetchUserInfo';
 import { checkuseraccess } from '../modules/firebase/fetchuseraccess';
 
@@ -26,20 +25,12 @@ const Home = ({ navigation }) => {
   const [isloading, setisloading] = useState(true)
   const [showbutton, setshowbutton] = useState(false)
   // modal pop up view 
-  const [modalVisible, setmodalVisible] = useState(false)
-  const [feedback, setfeedback] = useState([])
-
-  const toggleModal = () => {
-    setmodalVisible(!modalVisible)
-  }
-
+  
 
   useEffect(() => {
     checkuseraccess(setshowbutton)
     fetchuserinfo(setuserinfo_).then(()=>setisloading(false))
-    fetchFeedback({setfeedback})
   }, [])
-  // console.log(feedback)
 
 
 
@@ -60,14 +51,7 @@ const Home = ({ navigation }) => {
     )
   }
 
-  const handleimagepress = (index) => {
-    switch (index) {
-      case 1:
-        navigation.navigate('KKB')
-        break
-    }
-  }
-
+ 
   const handleProfileNavigation = () => {
     console.log("Navigating to Profile")
     navigation.navigate('Profile')
@@ -86,41 +70,9 @@ const Home = ({ navigation }) => {
             Hare {"\n"}Krishna !
           </Text>
 
-          <TouchableOpacity onPress={toggleModal}>
-            <Image
-              style={{ height: 40, width: 40, position: 'absolute', top: 35, left: 120 }}
-              source={require('../assets/images/notification.png')}
-            />
-          </TouchableOpacity>
+         
 
-          {modalVisible && (
-            <View style={styles.popupContainer}>
-
-              <View style={styles.popup}>
-
-                <Text style={styles.popupText}>Your Messages!</Text>
-                {feedback.length > 0 ? (
-                  feedback.map((message) => (
-
-                    <View key={message.id}>
-                      <View style={styles.msg_box}>
-                        <Text style={{ color: 'black', fontSize: 18, flex: 1 }}>{message.feedback}</Text>
-                        <View style={{ position: 'absolute', bottom: 5, right: 10 }}>
-                          <Text style={{ color: 'black', textAlign: 'justify', fontSize: 11 }} >{message.id}</Text>
-                        </View>
-                      </View>
-                    </View>
-                  ))
-                ) : (
-                  <Text style={styles.popupText}>No Messages Found!</Text>
-                )}
-
-                <TouchableOpacity style={styles.cancel_button} onPress={toggleModal}>
-                  <Text style={styles.closeText}>Close</Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          )}
+           
 
           <TouchableOpacity onPress={handleProfileNavigation}>
             <Image
@@ -142,7 +94,7 @@ const Home = ({ navigation }) => {
             contentContainerStyle={styles.contentcontainer}
           >
             {users.map((image, index) => (
-              <TouchableOpacity key={index} onPress={() => handleimagepress(index)} style={styles.slider_style}>
+              <TouchableOpacity key={index} style={styles.slider_style}>
                 <Image
                   // source={{ uri: image.imageurl }}
                   source={{ uri: image.imageurl }}
@@ -161,7 +113,7 @@ const Home = ({ navigation }) => {
         <Text style={styles.dai_sadana_style}>Daily Saadhana</Text>
 
         <View style={{ flexDirection: 'row', backgroundColor: 'white' }}>
-          <TouchableOpacity onPress={() => { navigation.navigate('Record_saadhana') }}>
+          <TouchableOpacity >
             <View style={[styles.cards_style, { backgroundColor: '#ffede3', marginLeft: 20 }]}>
               <Text style={{ color: '#be6753', margin: 20, fontSize: 18, fontWeight: 'bold' }}>Record {"\n"}Saadhana</Text>
               <Image style={{ position: 'absolute', bottom: 0, right: 20, height: 80, width: 30 }} source={require('../assets/images/sadana.png')} />
@@ -169,7 +121,7 @@ const Home = ({ navigation }) => {
           </TouchableOpacity>
 
 
-          <TouchableOpacity onPress={() => { navigation.navigate('Saadhana_report') }} >
+          <TouchableOpacity >
             <View style={[styles.cards_style, { backgroundColor: '#fff3c9', marginRight: 20 }]}>
               <Text style={{ color: '#e3b44a', margin: 20, fontSize: 18, fontWeight: 'bold' }}>Saadhana {"\n"}Report</Text>
               <Image style={{ position: 'absolute', bottom: 16, right: 20, height: 40, width: 30 }} source={require('../assets/images/timer.png')} />
@@ -180,7 +132,7 @@ const Home = ({ navigation }) => {
 
 
         {showbutton && <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', height: 50, flex: 1, backgroundColor: '#a486de', borderRadius: 10, margin: 20, marginTop: 30, marginBottom: 40 }}
-          onPress={() => navigation.navigate('Review_saadhana')} >
+          >
           <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 15 }}>Admin Portal</Text>
         </TouchableOpacity>}
 
