@@ -6,7 +6,9 @@ import KKB from '../screens/KKB';
 import Kirtan from '../screens/Kirtan';
 import Katha from '../screens/Katha';
 import Books from '../screens/Books';
- 
+import Record_saadhana from '../screens/RecordSaadhana';
+import RecordComSaadhana from "../screens/RecordComSaadhana";
+
 
 const Stack=createStackNavigator()
 
@@ -54,6 +56,27 @@ const AppNavigator=()=>(
           headerTitle:''
 
       }} name="Books" component={Books} />
+
+<Stack.Screen options={{
+          headerTitle: 'Saadhana Card',
+          headerStyle: { backgroundColor: '#e59479' },
+          headerTintColor:'white',
+          headerShadowVisible: false,
+          headerTitleStyle:{fontSize:20},
+          headerTitleAlign:'center'
+        }} 
+        name="Record_saadhana" component={Record_saadhana}/>
+
+<Stack.Screen options={{
+          headerTitle: 'Saadhana Card',
+          headerStyle: { backgroundColor: '#e59479' },
+          headerTintColor:'white',
+          headerShadowVisible: false,
+          headerTitleStyle:{fontSize:20},
+          headerTitleAlign:'center'
+        }} 
+        name="RecordComSaadhana" component={RecordComSaadhana}/>
+        
 
         </Stack.Navigator>
 )
