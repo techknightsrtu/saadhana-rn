@@ -8,77 +8,88 @@ import Katha from '../screens/Katha';
 import Books from '../screens/Books';
 import Record_saadhana from '../screens/RecordSaadhana';
 import RecordComSaadhana from "../screens/RecordComSaadhana";
+import Saadhana_report from "../screens/SaadhanaReport";
+
+const Stack = createStackNavigator()
+
+const AppNavigator = () => (
+  <Stack.Navigator >
+    <Stack.Screen options={{ headerShown: false, }} name="Login" component={Login} />
+    <Stack.Screen options={{ headerShown: false, }} name="Home" component={Home} />
+
+    <Stack.Screen options={{
+      headerTitle: 'My Profile',
+      headerStyle: { backgroundColor: '#e59479' },
+      headerTintColor: 'white',
+      headerShadowVisible: false,
+      headerTitleStyle: { fontSize: 20 },
+      headerTitleAlign: 'center'
+    }}
+      name="Profile" component={Profile} />
+
+    <Stack.Screen options={{
+      headerStyle: { backgroundColor: '#f1fdf1' },
+      headerShadowVisible: false,
+      headerTitle: ''
+
+    }} name="KKB" component={KKB} />
+
+    <Stack.Screen options={{
+      headerStyle: { backgroundColor: '#f1fdf1' },
+      headerShadowVisible: false,
+      headerTitle: ''
+
+    }} name="Kirtan" component={Kirtan} />
 
 
-const Stack=createStackNavigator()
+    <Stack.Screen options={{
+      headerStyle: { backgroundColor: '#f1fdf1' },
+      headerShadowVisible: false,
+      headerTitle: ''
 
-const AppNavigator=()=>(
-    <Stack.Navigator >
-      <Stack.Screen options={{headerShown:false,}} name="Login" component={Login} />
-        <Stack.Screen options={{headerShown:false,}} name="Home" component={Home} />
-        
-        <Stack.Screen options={{
-          headerTitle: 'My Profile',
-          headerStyle: { backgroundColor: '#e59479' },
-          headerTintColor:'white',
-          headerShadowVisible: false,
-          headerTitleStyle:{fontSize:20},
-          headerTitleAlign:'center'
-        }} 
-        name="Profile" component={Profile} />
-
-<Stack.Screen options={{
-          headerStyle:{backgroundColor:'#f1fdf1'},
-          headerShadowVisible:false,
-          headerTitle:''
-
-      }} name="KKB" component={KKB} />
-
-        <Stack.Screen options={{
-          headerStyle:{backgroundColor:'#f1fdf1'},
-          headerShadowVisible:false,
-          headerTitle:''
-
-      }} name="Kirtan" component={Kirtan} />
+    }} name="Katha" component={Katha} />
 
 
-        <Stack.Screen options={{
-          headerStyle:{backgroundColor:'#f1fdf1'},
-          headerShadowVisible:false,
-          headerTitle:''
+    <Stack.Screen options={{
+      headerStyle: { backgroundColor: '#f1fdf1' },
+      headerShadowVisible: false,
+      headerTitle: ''
 
-      }} name="Katha" component={Katha} />
+    }} name="Books" component={Books} />
+
+    <Stack.Screen options={{
+      headerTitle: 'Saadhana Card',
+      headerStyle: { backgroundColor: '#e59479' },
+      headerTintColor: 'white',
+      headerShadowVisible: false,
+      headerTitleStyle: { fontSize: 20 },
+      headerTitleAlign: 'center'
+    }}
+      name="Record_saadhana" component={Record_saadhana} />
+
+    <Stack.Screen options={{
+      headerTitle: 'Saadhana Card',
+      headerStyle: { backgroundColor: '#e59479' },
+      headerTintColor: 'white',
+      headerShadowVisible: false,
+      headerTitleStyle: { fontSize: 20 },
+      headerTitleAlign: 'center'
+    }}
+      name="RecordComSaadhana" component={RecordComSaadhana} />
+
+    <Stack.Screen options={{
+      headerTitle: 'Saadhana Report',
+      headerStyle: { backgroundColor: '#e59479' },
+      headerTintColor: 'white',
+      headerShadowVisible: false,
+      headerTitleStyle: { fontSize: 20 },
+      headerTitleAlign: 'center'
+    }}
+      name="Saadhana_report" component={Saadhana_report} />
 
 
-        <Stack.Screen options={{
-          headerStyle:{backgroundColor:'#f1fdf1'},
-          headerShadowVisible:false,
-          headerTitle:''
 
-      }} name="Books" component={Books} />
-
-<Stack.Screen options={{
-          headerTitle: 'Saadhana Card',
-          headerStyle: { backgroundColor: '#e59479' },
-          headerTintColor:'white',
-          headerShadowVisible: false,
-          headerTitleStyle:{fontSize:20},
-          headerTitleAlign:'center'
-        }} 
-        name="Record_saadhana" component={Record_saadhana}/>
-
-<Stack.Screen options={{
-          headerTitle: 'Saadhana Card',
-          headerStyle: { backgroundColor: '#e59479' },
-          headerTintColor:'white',
-          headerShadowVisible: false,
-          headerTitleStyle:{fontSize:20},
-          headerTitleAlign:'center'
-        }} 
-        name="RecordComSaadhana" component={RecordComSaadhana}/>
-        
-
-        </Stack.Navigator>
+  </Stack.Navigator>
 )
 
 export default AppNavigator

@@ -170,7 +170,7 @@ const Home = ({ navigation }) => {
           </TouchableOpacity>
 
 
-          <TouchableOpacity >
+          <TouchableOpacity onPress={() => { navigation.navigate('Saadhana_report') }}>
             <View style={[styles.cards_style, { backgroundColor: '#fff3c9', marginRight: 20 }]}>
               <Text style={{ color: '#e3b44a', margin: 20, fontSize: 18, fontWeight: 'bold' }}>Saadhana {"\n"}Report</Text>
               <Image style={{ position: 'absolute', bottom: 16, right: 20, height: 40, width: 30 }} source={require('../assets/images/timer.png')} />
