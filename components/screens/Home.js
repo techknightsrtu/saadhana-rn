@@ -18,6 +18,7 @@ import Version from '../component/footer';
 import auth from '@react-native-firebase/auth';
 import { fetchuserinfo } from '../modules/asyncStorage/fetchUserInfo';
 import { checkuseraccess } from '../modules/firebase/fetchuseraccess';
+import { fetchFeedback } from '../modules/firebase/fetchfeedback';
 
 
 const Home = ({ navigation }) => {
@@ -25,11 +26,18 @@ const Home = ({ navigation }) => {
   const [isloading, setisloading] = useState(true)
   const [showbutton, setshowbutton] = useState(false)
   // modal pop up view 
+  const [modalVisible, setmodalVisible] = useState(false)
+  const [feedback, setfeedback] = useState([])
+
+  const toggleModal = () => {
+    setmodalVisible(!modalVisible)
+  }
   
 
   useEffect(() => {
     checkuseraccess(setshowbutton)
     fetchuserinfo(setuserinfo_).then(()=>setisloading(false))
+    fetchFeedback({setfeedback})
   }, [])
 
 
@@ -71,6 +79,41 @@ const Home = ({ navigation }) => {
           </Text>
 
          
+          <TouchableOpacity onPress={toggleModal}>
+            <Image
+              style={{ height: 40, width: 40, position: 'absolute', top: 35, left: 120 }}
+              source={require('../assets/images/notification.png')}
+            />
+          </TouchableOpacity>
+
+          {modalVisible && (
+            <View style={styles.popupContainer}>
+
+              <View style={styles.popup}>
+
+                <Text style={styles.popupText}>Your Messages!</Text>
+                {feedback.length > 0 ? (
+                  feedback.map((message) => (
+
+                    <View key={message.id}>
+                      <View style={styles.msg_box}>
+                        <Text style={{ color: 'black', fontSize: 18, flex: 1 }}>{message.feedback}</Text>
+                        <View style={{ position: 'absolute', bottom: 5, right: 10 }}>
+                          <Text style={{ color: 'black', textAlign: 'justify', fontSize: 11 }} >{message.id}</Text>
+                        </View>
+                      </View>
+                    </View>
+                  ))
+                ) : (
+                  <Text style={styles.popupText}>No Messages Found!</Text>
+                )}
+
+                <TouchableOpacity style={styles.cancel_button} onPress={toggleModal}>
+                  <Text style={styles.closeText}>Close</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          )}
 
            
 
