@@ -59,6 +59,13 @@ const Home = ({ navigation }) => {
     )
   }
 
+  const handleimagepress = (index) => {
+    switch (index) {
+      case 1:
+        navigation.navigate('KKB')
+        break
+    }
+  }
  
  
   const handleProfileNavigation = () => {
@@ -136,7 +143,7 @@ const Home = ({ navigation }) => {
             contentContainerStyle={styles.contentcontainer}
           >
             {users.map((image, index) => (
-              <TouchableOpacity key={index} style={styles.slider_style}>
+              <TouchableOpacity key={index} onPress={() => handleimagepress(index)} style={styles.slider_style}>
                 <Image
                   // source={{ uri: image.imageurl }}
                   source={{ uri: image.imageurl }}
