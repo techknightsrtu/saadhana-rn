@@ -32,7 +32,7 @@ const Home = ({ navigation }) => {
   const toggleModal = () => {
     setmodalVisible(!modalVisible)
   }
-  
+
 
   useEffect(() => {
     checkuseraccess(setshowbutton)
@@ -60,6 +60,7 @@ const Home = ({ navigation }) => {
   }
 
  
+ 
   const handleProfileNavigation = () => {
     console.log("Navigating to Profile")
     navigation.navigate('Profile')
@@ -78,7 +79,6 @@ const Home = ({ navigation }) => {
             Hare {"\n"}Krishna !
           </Text>
 
-         
           <TouchableOpacity onPress={toggleModal}>
             <Image
               style={{ height: 40, width: 40, position: 'absolute', top: 35, left: 120 }}
@@ -115,7 +115,6 @@ const Home = ({ navigation }) => {
             </View>
           )}
 
-           
 
           <TouchableOpacity onPress={handleProfileNavigation}>
             <Image
@@ -156,7 +155,7 @@ const Home = ({ navigation }) => {
         <Text style={styles.dai_sadana_style}>Daily Saadhana</Text>
 
         <View style={{ flexDirection: 'row', backgroundColor: 'white' }}>
-          <TouchableOpacity >
+          <TouchableOpacity onPress={() => { navigation.navigate('Record_saadhana') }}>
             <View style={[styles.cards_style, { backgroundColor: '#ffede3', marginLeft: 20 }]}>
               <Text style={{ color: '#be6753', margin: 20, fontSize: 18, fontWeight: 'bold' }}>Record {"\n"}Saadhana</Text>
               <Image style={{ position: 'absolute', bottom: 0, right: 20, height: 80, width: 30 }} source={require('../assets/images/sadana.png')} />
