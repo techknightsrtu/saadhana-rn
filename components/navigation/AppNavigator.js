@@ -9,6 +9,7 @@ import Books from '../screens/Books';
 import Record_saadhana from '../screens/RecordSaadhana';
 import RecordComSaadhana from "../screens/RecordComSaadhana";
 import Saadhana_report from "../screens/SaadhanaReport";
+import Review_saadhana from '../screens/ReviewSaadhana';
 
 const Stack = createStackNavigator()
 
@@ -87,6 +88,15 @@ const AppNavigator = () => (
     }}
       name="Saadhana_report" component={Saadhana_report} />
 
+    <Stack.Screen options={{
+      headerTitle: 'Saadhana Dashboard',
+      headerStyle: { backgroundColor: '#a486de' },
+      headerTintColor: 'white',
+      headerShadowVisible: false,
+      headerTitleStyle: { fontSize: 20 },
+      headerTitleAlign: 'center'
+
+    }} name="Review_saadhana" component={Review_saadhana} />
 
 
   </Stack.Navigator>

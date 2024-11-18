@@ -6,8 +6,8 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 15,
         marginTop: 15,
-        elevation: 1
-        // flexDirection:'column'
+        elevation: 1,
+         // flexDirection:'column'
     },
     shloka: {
         textAlign: 'center',

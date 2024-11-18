@@ -181,7 +181,7 @@ const Home = ({ navigation }) => {
 
 
         {showbutton && <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', height: 50, flex: 1, backgroundColor: '#a486de', borderRadius: 10, margin: 20, marginTop: 30, marginBottom: 40 }}
-          >
+          onPress={() => navigation.navigate('Review_saadhana')}>
           <Text style={{ color: 'white', fontWeight: 'bold', fontSize: 15 }}>Admin Portal</Text>
         </TouchableOpacity>}
 

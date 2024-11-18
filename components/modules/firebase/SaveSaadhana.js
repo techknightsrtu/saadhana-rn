@@ -15,18 +15,9 @@ export const handlesaadhana = async (selectedDate, waketime, sleeptime, dinner, 
         console.error('no user')
         return
     }
-    console.log(selectedDate)
-    const convertDateFormat = (date) => {
-        const [day, month, year] = date.split('-');  // Split the date by '-'
-        return `${year}-${month}-${day}`;  // Return the formatted date
-    };
-
-    // Call convertDateFormat directly to format the selectedDate
-    const formattedDate = convertDateFormat(selectedDate);
-    console.log(formattedDate)
 
     if (selectedDate.trim() === '' ||
-        (waketime || '').trim() === '' ||  // Provide a fallback
+        (waketime || '').trim() === '' ||
         (sleeptime || '').trim() === '' ||
         (dinner || '').trim() === '' ||
         (selectedoptiondaysleep || '').trim() === '' ||
@@ -62,7 +53,7 @@ export const handlesaadhana = async (selectedDate, waketime, sleeptime, dinner, 
             docRef.collection(FIRESTORE_COLLECTION_PATHS.Saadhana)
                 .doc(selectedDate)
                 .set({
-                    date: formattedDate,
+                    date: selectedDate,
                     wake_up_time: waketime,
                     sleep_time: sleeptime,
                     dinner_time: dinner,

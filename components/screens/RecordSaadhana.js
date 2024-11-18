@@ -4,7 +4,7 @@ import { FlatList, ScrollView } from 'react-native-gesture-handler'
 import styles from '../assets/styles/StylesRecordSaadhana';
 import { CurrWeekDays } from '../component/RecordSaadhanaComponents/CurrWeekDates';
 import { DateCompare } from '../modules/SaadhanaStatus/DateCompare';
-// import { fetchSaadhanaDates } from '../modules/firebase/fetchSaadhanaDates';
+import { fetchSaadhanaDates } from '../modules/firebase/fetchSaadhanaDates';
 import fetchSaadhanaDates from '../modules/firebase/fetchSaadhanaDates';
 import { useFocusEffect } from '@react-navigation/native';
 
@@ -17,14 +17,12 @@ const Record_saadhana = ({ navigation }) => {
     const [isLoading,setisLoading]=useState(true)
 
     EditArray = Array(7).fill('Edit')
-
-    
+        
         const weekDateExtract = async () => {
             const weekDates = CurrWeekDays()
             setWeekDays(weekDates)
 
             const saadhanaDates = await fetchSaadhanaDates()
-            // console.log(saadhanaDates)
             setSaadhanaDates(saadhanaDates)
         }
 
