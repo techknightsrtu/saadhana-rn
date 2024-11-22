@@ -4,7 +4,6 @@ import { FlatList, ScrollView } from 'react-native-gesture-handler'
 import styles from '../assets/styles/StylesRecordSaadhana';
 import { CurrWeekDays } from '../component/RecordSaadhanaComponents/CurrWeekDates';
 import { DateCompare } from '../modules/SaadhanaStatus/DateCompare';
-import { fetchSaadhanaDates } from '../modules/firebase/fetchSaadhanaDates';
 import fetchSaadhanaDates from '../modules/firebase/fetchSaadhanaDates';
 import { useFocusEffect } from '@react-navigation/native';
 

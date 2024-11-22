@@ -8,8 +8,6 @@ export const fetchFeedback = async ({setfeedback}) => {
     try {
         
         const data=await fetchCurrUserId()
-        // console.log(userid)
-        // console.log('hi')
 
         const messageRef = firestore().collection('users').doc(data.userId).collection('Messages')
         // console.log(messageRef)

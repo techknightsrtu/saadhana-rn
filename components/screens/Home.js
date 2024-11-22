@@ -19,7 +19,7 @@ import auth from '@react-native-firebase/auth';
 import { fetchuserinfo } from '../modules/asyncStorage/fetchUserInfo';
 import { checkuseraccess } from '../modules/firebase/fetchuseraccess';
 import { fetchFeedback } from '../modules/firebase/fetchfeedback';
-
+import { deleteFeedback } from '../modules/firebase/deleteFeedback';
 
 const Home = ({ navigation }) => {
   const [userinfo_, setuserinfo_] = useState(null)
@@ -31,6 +31,8 @@ const Home = ({ navigation }) => {
 
   const toggleModal = () => {
     setmodalVisible(!modalVisible)
+    // function to delete feedback once opened and then close
+    deleteFeedback()
   }
 
 
@@ -115,7 +117,7 @@ const Home = ({ navigation }) => {
                   <Text style={styles.popupText}>No Messages Found!</Text>
                 )}
 
-                <TouchableOpacity style={styles.cancel_button} onPress={toggleModal}>
+                <TouchableOpacity style={styles.cancel_button} onPress={()=>{toggleModal(),deleteFeedback({setfeedback})}}>
                   <Text style={styles.closeText}>Close</Text>
                 </TouchableOpacity>
               </View>
