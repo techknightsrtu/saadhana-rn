@@ -7,59 +7,67 @@ import { DateCompare } from '../modules/SaadhanaStatus/DateCompare';
 import fetchSaadhanaDates from '../modules/firebase/fetchSaadhanaDates';
 import { useFocusEffect } from '@react-navigation/native';
 
+// Redux
+import { useDispatch, useSelector } from 'react-redux';
+import { setWeekDates } from '../app/slices/RecordSaadhanaSlice';
+import { setSaadhanaDates } from "../app/slices/RecordSaadhanaSlice";
+import { setSaadhanaStatus } from "../app/slices/RecordSaadhanaSlice";
+
+
 const Record_saadhana = ({ navigation }) => {
 
-    const [WeekDays, setWeekDays] = useState([])
-    const [SaadhanaDates, setSaadhanaDates] = useState([])
-    const [SaadhanaStatus, setSaadhanaStatus] = useState([])
-    const [isLoading,setisLoading]=useState(true)
+    const dispatch = useDispatch()
+    const WeekDays=useSelector((state)=>state.RecordSaadhana.weekDates)
+    const SaadhanaDates=useSelector((state)=>state.RecordSaadhana.saadhanaDates)
+    const SaadhanaStatus=useSelector((state)=>state.RecordSaadhana.saadhanaStatus)
+
+    const [isLoading, setisLoading] = useState(true)
 
     EditArray = Array(7).fill('Edit')
-        
-        const weekDateExtract = async () => {
-            const weekDates = CurrWeekDays()
-            setWeekDays(weekDates)
 
-            const saadhanaDates = await fetchSaadhanaDates()
-            setSaadhanaDates(saadhanaDates)
+    const weekDateExtract = async () => {
+        if (WeekDays.length === 0) {
+            const weekDates = CurrWeekDays()
+            dispatch(setWeekDates(weekDates))
         }
 
-        useFocusEffect(
-            useCallback(()=>{
-                const loadData=async()=>{
-                    setisLoading(true)
-                    await weekDateExtract()
-                    setisLoading(false)
-                }
-                loadData()
-            },[])
-        )
+        if(SaadhanaDates.length===0){
+            const saadhanaDates = await fetchSaadhanaDates()
+            dispatch(setSaadhanaDates(saadhanaDates))
+           }
+    }
+
+    useFocusEffect(
+        useCallback(() => {
+            const loadData = async () => {
+                setisLoading(true)
+                await weekDateExtract()
+                setisLoading(false)
+            }
+            loadData()
+        }, [])
+    )
 
     useEffect(() => {
         if (WeekDays.length > 0 && SaadhanaDates.length > 0) {
-            const statusArray= DateCompare(WeekDays, SaadhanaDates)
-            setSaadhanaStatus(statusArray)
+            if(SaadhanaStatus.length===0){
+                const statusArray = DateCompare(WeekDays, SaadhanaDates)
+                dispatch(setSaadhanaStatus(statusArray))      
+            }
         }
-    },[SaadhanaDates,WeekDays])
+    }, [SaadhanaDates, WeekDays])
 
     if (isLoading) {
         return (
             <View style={styles.loadingContainer}>
                 <ActivityIndicator size="large" color="#0000ff" />
-                <Text style={{color:'black',size:20}}>Loading...</Text>
+                <Text style={{ color: 'black', size: 20 }}>Loading...</Text>
             </View>
         );
     }
 
     return (
         <View style={{ flex: 1, backgroundColor: '#e59479' }}>
-            {/* <TextInput
-        style={{height:40,borderWidth:2,color:'black'}} placeholder='type your name here' 
-        onChangeText={newtext=>settext(newtext)}
-        defaultValue={text}
-        />
-        <Button title='submit' onPress={handlesubmit}/> */}
-
 
             <View style={{ flex: 1, alignItems: 'center', backgroundColor: '#f9eae3', borderRadius: 25 }}>
 
@@ -92,9 +100,6 @@ const Record_saadhana = ({ navigation }) => {
                             <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 17, right: 120 }}>Status</Text>
                         </View>
 
-                        {/* <View style={{flexDirection:'row',justifyContent:'space-between',flexWrap:'wrap'}}>
-                                <Text style={{color:'black'}}>{WeekDays}</Text>
-                            </View> */}
                         <View style={{ flexDirection: 'row' }}>
                             <FlatList
 
@@ -109,7 +114,7 @@ const Record_saadhana = ({ navigation }) => {
                             <FlatList
                                 style={{ left: 15 }}
                                 data={EditArray}
-                                renderItem={({ item,index }) => <TouchableOpacity onPress={() => { navigation.navigate('RecordComSaadhana', {selectedDate:WeekDays[index]}) }} >
+                                renderItem={({ item, index }) => <TouchableOpacity onPress={() => { navigation.navigate('RecordComSaadhana', { selectedDate: WeekDays[index] }) }} >
                                     <Text style={styles.edit}>{item}</Text>
                                 </TouchableOpacity>
                                 }
