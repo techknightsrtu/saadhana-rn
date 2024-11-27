@@ -5,24 +5,26 @@ import { useEffect } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { LogBox } from 'react-native';
 import AppNavigator from './components/navigation/AppNavigator';
-import {GOOGLE_WEB_CLIENT_ID} from '@env';
+import { GOOGLE_WEB_CLIENT_ID } from '@env';
 
-LogBox.ignoreAllLogs();  
+LogBox.ignoreAllLogs();
 
 const App = () => {
   useEffect(() => {
     GoogleSignin.configure({
-      webClientId:GOOGLE_WEB_CLIENT_ID
+      webClientId: GOOGLE_WEB_CLIENT_ID
     })
   }, [])
 
 
   return (
-    <GestureHandlerRootView style={{flex:1,backgroundColor:'white'}}>
-    <NavigationContainer  initialRouteName="Home">
-        <AppNavigator/>                   
-    </NavigationContainer>
-    </GestureHandlerRootView>
+    
+        <GestureHandlerRootView style={{ flex: 1, backgroundColor: 'white' }}>
+          <NavigationContainer initialRouteName="Home">
+            <AppNavigator />
+          </NavigationContainer>
+        </GestureHandlerRootView>
+      
   )
 }
 

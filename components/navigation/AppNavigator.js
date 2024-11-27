@@ -14,6 +14,7 @@ import Review_saadhana from '../screens/ReviewSaadhana';
 const Stack = createStackNavigator()
 
 const AppNavigator = () => (
+
   <Stack.Navigator >
     <Stack.Screen options={{ headerShown: false, }} name="Login" component={Login} />
     <Stack.Screen options={{ headerShown: false, }} name="Home" component={Home} />
@@ -101,5 +102,8 @@ const AppNavigator = () => (
 
   </Stack.Navigator>
 )
+
+
+
 
 export default AppNavigator

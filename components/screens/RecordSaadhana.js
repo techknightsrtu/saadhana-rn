@@ -8,7 +8,6 @@ import fetchSaadhanaDates from '../modules/firebase/fetchSaadhanaDates';
 import { useFocusEffect } from '@react-navigation/native';
 
 const Record_saadhana = ({ navigation }) => {
-    // const [text, settext] = useState('')
 
     const [WeekDays, setWeekDays] = useState([])
     const [SaadhanaDates, setSaadhanaDates] = useState([])

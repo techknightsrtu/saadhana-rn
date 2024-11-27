@@ -5,7 +5,7 @@ import { callgooglesignin } from '../modules/validations/signin';
 import { checkUserAuth } from '../modules/validations/userAuthExisting';
 
 const Login = ({ navigation }) => {
-
+  
   useEffect(() => {
     checkUserAuth(navigation)
   }, [])

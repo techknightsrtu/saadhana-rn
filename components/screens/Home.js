@@ -9,7 +9,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 // import { SafeAreaView } from 'react-native-safe-area-context';
 // import SlidingImageCarousel from './sliding_img';
 import database, { set } from '@react-native-firebase/database'
-import firestore from '@react-native-firebase/firestore';
+import firestore, { startAfter } from '@react-native-firebase/firestore';
 import styles from '../assets/styles/stylesHome';
 
 import usefetchdata from '../modules/firebase/getImgfromFirebase'
@@ -20,8 +20,12 @@ import { fetchuserinfo } from '../modules/asyncStorage/fetchUserInfo';
 import { checkuseraccess } from '../modules/firebase/fetchuseraccess';
 import { fetchFeedback } from '../modules/firebase/fetchfeedback';
 import { deleteFeedback } from '../modules/firebase/deleteFeedback';
+import { useDispatch, useSelector } from 'react-redux';
+// import { setUser } from '../../app/Slices/authSlice'; 
+import { setUser } from '../app/Slices/authSlice';
 
 const Home = ({ navigation }) => {
+
   const [userinfo_, setuserinfo_] = useState(null)
   const [isloading, setisloading] = useState(true)
   const [showbutton, setshowbutton] = useState(false)
@@ -38,10 +42,9 @@ const Home = ({ navigation }) => {
 
   useEffect(() => {
     checkuseraccess(setshowbutton)
-    fetchuserinfo(setuserinfo_).then(()=>setisloading(false))
+    fetchuserinfo(setuserinfo_).then(() => setisloading(false))
     fetchFeedback({setfeedback})
   }, [])
-
 
 
   // google profile photo
