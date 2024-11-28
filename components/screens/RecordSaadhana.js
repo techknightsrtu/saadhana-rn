@@ -31,10 +31,9 @@ const Record_saadhana = ({ navigation }) => {
             dispatch(setWeekDates(weekDates))
         }
 
-        if(SaadhanaDates.length===0){
             const saadhanaDates = await fetchSaadhanaDates()
             dispatch(setSaadhanaDates(saadhanaDates))
-           }
+           
     }
 
     useFocusEffect(
@@ -50,10 +49,10 @@ const Record_saadhana = ({ navigation }) => {
 
     useEffect(() => {
         if (WeekDays.length > 0 && SaadhanaDates.length > 0) {
-            if(SaadhanaStatus.length===0){
+            
                 const statusArray = DateCompare(WeekDays, SaadhanaDates)
                 dispatch(setSaadhanaStatus(statusArray))      
-            }
+         
         }
     }, [SaadhanaDates, WeekDays])
 

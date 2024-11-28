@@ -1,12 +1,7 @@
 
 import { useEffect, useState } from 'react'
 import { Button, StyleSheet, Text, TextInput, View, TouchableOpacity } from 'react-native'
-import firestore from '@react-native-firebase/firestore'
 import { ScrollView } from 'react-native-gesture-handler'
-import DateTimePickerModal, { confirmButtonStyles } from 'react-native-modal-datetime-picker';
-import DateTimePicker from 'react-native-modal-datetime-picker';
-import auth from '@react-native-firebase/auth';
-import { serializer } from '../../metro.config';
 import styles from '../assets/styles/StylesRecordSaadhana';
 import WakeTimeBox from '../component/RecordSaadhanaComponents/WakeTimeBox';
 import SleepTimeBox from '../component/RecordSaadhanaComponents/SleepTimeBox';
@@ -21,33 +16,41 @@ import { handlesaadhana } from '../modules/firebase/SaveSaadhana';
 import React from 'react';
 import { fetchStudentSaadhana } from '../modules/firebase/fetchStudentSaadhana';
 import { fetchCurrUserId } from '../modules/firebase/fetchCurrUserId';
-import {setStudentDatainUI} from '../component/RecordSaadhanaComponents/setStudentDatainUI';
+import { setStudentDatainUI } from '../component/RecordSaadhanaComponents/setStudentDatainUI';
+import { setUserId } from '../app/slices/userSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSaadhanaData } from '../app/slices/RecordSaadhanaSlice';
+
 
 const RecordComSaadhana = ({ route }) => {
-    // const [text, settext] = useState('')
     const { selectedDate } = route.params
-    const [studentdata, setstudentdata] = useState('')
+    
+    const dispatch = useDispatch()
+    const userId = useSelector(state => state.user.userId)
+    const studentdata = useSelector(state => state.RecordSaadhana.saadhanaData)
 
     useEffect(() => {
         const checkExistingData = async () => {
-            const data = await fetchCurrUserId()
-            studentid = data.userId
-            fetchStudentSaadhana({ studentid, selectedDate, setstudentdata })
+            if (userId == null) {
+                const data = await fetchCurrUserId()
+                dispatch(setUserId(data.userId))
+            }
+
+            const saadhanaData = await fetchStudentSaadhana({ userId, selectedDate });
+            dispatch(setSaadhanaData(saadhanaData));
+
         }
 
         checkExistingData()
     }, [])
-
-    useEffect(()=>{
-        if(Object.keys(studentdata).length>0){
-            setStudentDatainUI({studentdata,setwaketime, setsleeptime, setdinner, setselectedoptiondaysleep, setselectedoptionmorning, setjapa, setselectedoptionbookreading, setselectedoptionlecturehearing, setcomment})
-        }
-    },[studentdata])
     console.log(studentdata)
+    useEffect(() => {
+        if (studentdata && Object.keys(studentdata).length > 0) {
+            setStudentDatainUI({ studentdata, setwaketime, setsleeptime, setdinner, setselectedoptiondaysleep, setselectedoptionmorning, setjapa, setselectedoptionbookreading, setselectedoptionlecturehearing, setcomment })
+        }
+    }, [studentdata])
 
-
-    // const [selectedDate, setSelectedDate] = useState(null);
-    const [isboxselected, setisboxselected] = useState(false)
+       const [isboxselected, setisboxselected] = useState(false)
     // blank const
     const [waketime, setwaketime] = useState('')
     const [sleeptime, setsleeptime] = useState('')
