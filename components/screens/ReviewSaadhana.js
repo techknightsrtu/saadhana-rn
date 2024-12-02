@@ -31,17 +31,20 @@ const Review_saadhana = () => {
     }, [])
 
 
-    const StudentComponent = ({ studentname, studentid }) => {
+    const StudentComponent = ({ studentname, userId }) => {
         const [studentdata, setstudentdata] = useState(null)
         const [name, setname] = useState('')
         const [modalVisible, setmodalVisible] = useState(false)
-
+        
         useEffect(() => {
             const fetchData = async () => {
                 try {
-                    setname(await fetchNameUnderStudent({ studentid }))
+
+                    let name= await fetchNameUnderStudent( {userId} )
+                    setname(name)
                     if (studentname && selectedDate) {
-                        await fetchStudentSaadhana({ studentid, selectedDate, setstudentdata })
+                        data=await fetchStudentSaadhana({ userId, selectedDate })
+                        setstudentdata(data)
                     }
 
                 } catch (error) {
@@ -51,12 +54,12 @@ const Review_saadhana = () => {
                 }
             }
                 fetchData()
-            }, [studentname,selectedDate])
-
+            }, [studentname, selectedDate])
+// console.log(studentdata)
             
 
         return (
-            <SaadhanaBoxes studentdata={studentdata} name={name} setmodalVisible={setmodalVisible} modalVisible={modalVisible} studentid={studentid} selectedDate={selectedDate} />
+            <SaadhanaBoxes studentdata={studentdata} name={name} setmodalVisible={setmodalVisible} modalVisible={modalVisible} userId={userId} selectedDate={selectedDate} />
         )
 
     }
@@ -128,7 +131,7 @@ const Review_saadhana = () => {
                                 student.map((student) => (
                                     Object.keys(student).map((key) => {
                                         if (key.startsWith('id')) {
-                                            return <StudentComponent studentname={student.id} studentid={student.id} />
+                                            return <StudentComponent studentname={student.id} userId={student.id} />
                                         }
                                     })
                                 ))

@@ -16,8 +16,6 @@ export const add_student = async ({seterrormsg,email_student,setEmail_student}) 
     const user = auth().currentUser
     const username = user.displayName
     const collectionname = `${username} Counsellor`
-    // console.log(collectionname)
-
 
     // first finding under user and taking all data
 
@@ -47,8 +45,6 @@ export const add_student = async ({seterrormsg,email_student,setEmail_student}) 
 
         studentDoc.forEach((doc) => {
             const studentdata = doc.data()
-            console.log(studentdata.id)
-            console.log('hi')
 
             if (studentdata.id === studentId) {
                 studentexist = true
@@ -60,7 +56,7 @@ export const add_student = async ({seterrormsg,email_student,setEmail_student}) 
             setEmail_student('')
 
         } else {
-            await counselorCollection.doc(id).set({
+            await counselorCollection.doc(studentId).set({
                 id: studentId,
                 name: studentName
             })

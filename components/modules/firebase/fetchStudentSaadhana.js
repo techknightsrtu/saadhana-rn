@@ -2,7 +2,10 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
 export const fetchStudentSaadhana=async({userId, selectedDate})=>{
+
+    // const userId = studentid
     console.log(userId)
+    // console.log('hi')
         try {
             const user = auth().currentUser
             if (!user) {
@@ -18,6 +21,7 @@ export const fetchStudentSaadhana=async({userId, selectedDate})=>{
                 .get()            
 
             if (saadhanaDoc.exists) {
+                // console.log(saadhanaDoc.data())
                 return (saadhanaDoc.data())                
 
             } else {

@@ -50,7 +50,7 @@ const RecordComSaadhana = ({ route }) => {
         }
     }, [studentdata])
 
-       const [isboxselected, setisboxselected] = useState(false)
+      
     // blank const
     const [waketime, setwaketime] = useState('')
     const [sleeptime, setsleeptime] = useState('')

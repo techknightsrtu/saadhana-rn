@@ -74,7 +74,6 @@ const Home = ({ navigation }) => {
  
  
   const handleProfileNavigation = () => {
-    console.log("Navigating to Profile")
     navigation.navigate('Profile')
   }
 

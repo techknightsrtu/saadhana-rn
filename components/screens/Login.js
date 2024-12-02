@@ -7,14 +7,13 @@ import { checkUserAuth } from '../modules/validations/userAuthExisting';
 const Login = ({ navigation }) => {
   
   useEffect(() => {
-    checkUserAuth(navigation)
+    checkUserAuth({navigation})
   }, [])
 
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>
       {/* upper part */}
       <View style={styles.login_upper}>
-        {/* <Text  style={styles.sadana_style}>Saadhana</Text> */}
         <Image style={styles.logo_style} source={require('../assets/images/saadhana_logo.png')} resizeMode='contain' />
         <Text style={styles.bg_style}>
           युक्ताहारविहारस्य {"\n"} युक्तचेष्टस्य कर्मसु । {"\n"}
@@ -28,7 +27,7 @@ const Login = ({ navigation }) => {
       <View style={styles.login_lower}>
         <TouchableOpacity style={{ flex: 1, alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
           <Image style={{ height: 30, width: 30, marginRight: 10 }} source={require('../assets/images/googlelogo.png')} />
-          <Text style={styles.google_style} onPress={()=>callgooglesignin(navigation)}>Sign in with Google</Text>
+          <Text style={styles.google_style} onPress={()=>callgooglesignin({navigation})}>Sign in with Google</Text>
         </TouchableOpacity>
       </View>
     </View>

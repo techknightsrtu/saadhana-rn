@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, TextInput, Alert, Modal } from 'react-native';
 import { handleFeedback } from '../../modules/firebase/SaveFeedback';
 
-const SaadhanaBoxes=({studentdata,name,setmodalVisible,modalVisible, studentid,selectedDate})=>{
-    
+const SaadhanaBoxes=({studentdata,name,setmodalVisible,modalVisible, UserId,selectedDate})=>{
+    // console.log(studentdata)
     const [Feedback, setFeedback] = useState("")
     return (
         <View style={{ justifyContent: 'center', alignItems: 'center' }}>
@@ -23,7 +23,7 @@ const SaadhanaBoxes=({studentdata,name,setmodalVisible,modalVisible, studentid,s
                         </View>
 
                         <View style={{ backgroundColor: 'grey', borderWidth: 1, marginVertical: 10 }}></View>
-                        {/* <Text style={{color:'black'}}>{JSON.stringify(data)}</Text> */}
+                        
 
                         {/* sadana showing */}
                         <View style={styles.saadhana_body}>
@@ -100,7 +100,7 @@ const SaadhanaBoxes=({studentdata,name,setmodalVisible,modalVisible, studentid,s
                                             <TouchableOpacity style={styles.add_cancel} onPress={() => setmodalVisible(false)}>
                                                 <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>Cancel</Text>
                                             </TouchableOpacity>
-                                            <TouchableOpacity style={styles.add_cancel} onPress={() => handleFeedback({ studentid, studentdata, Feedback, setFeedback, setmodalVisible })}>
+                                            <TouchableOpacity style={styles.add_cancel} onPress={() => handleFeedback({ UserId, studentdata, Feedback, setFeedback, setmodalVisible })}>
                                                 <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>Send</Text>
                                             </TouchableOpacity>
                                         </View>
@@ -113,11 +113,9 @@ const SaadhanaBoxes=({studentdata,name,setmodalVisible,modalVisible, studentid,s
                     </View>
                 </View>
 
-                // {/* </View> */}
-                //     )
-                // )student
+               
             ) : (
-                // <Text> no data found</Text>
+               
                 <View style={styles.noSadhanaBox}>
 
                     <Text style={{ color: 'black', padding: 10 }}>{name} has not filled saadhana of {selectedDate}</Text>

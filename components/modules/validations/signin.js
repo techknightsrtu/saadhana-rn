@@ -6,7 +6,7 @@ import { saveuserinfo } from '../asyncStorage/SaveUserInfo';
 // import { setUserAuth } from '../../app/Slices/authSlice';
 
 
-export async function callgooglesignin(dispatch,navigation) {
+export async function callgooglesignin({navigation}) {
     try {
       await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
       const userinfo = await GoogleSignin.signIn()
@@ -15,8 +15,6 @@ export async function callgooglesignin(dispatch,navigation) {
       const googleCredential = auth.GoogleAuthProvider.credential(idToken);
       await auth().signInWithCredential(googleCredential);
       
-      
-      console.log(idToken)
       saveAuthToken(idToken)
       saveuserinfo(userinfo)
       
