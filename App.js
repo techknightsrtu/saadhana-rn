@@ -8,17 +8,12 @@ import AppNavigator from './components/navigation/AppNavigator';
 import { GOOGLE_WEB_CLIENT_ID } from '@env';
 import { Provider } from 'react-redux';
 import store from './components/app/store';
-
+import { checkUserAuth } from './components/modules/validations/userAuthExisting';
 
 LogBox.ignoreAllLogs();
 
-const App = () => {
-  useEffect(() => {
-    GoogleSignin.configure({
-      webClientId: GOOGLE_WEB_CLIENT_ID
-    })
-  }, [])
-
+const App = ({navigation}) => {
+  
 
   return (
       <Provider store={store}>

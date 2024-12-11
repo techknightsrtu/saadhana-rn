@@ -6,9 +6,7 @@ import { checkUserAuth } from '../modules/validations/userAuthExisting';
 
 const Login = ({ navigation }) => {
   
-  useEffect(() => {
-    checkUserAuth({navigation})
-  }, [])
+
 
   return (
     <View style={{ flex: 1, backgroundColor: 'white' }}>

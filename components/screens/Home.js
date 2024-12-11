@@ -158,9 +158,6 @@ const Home = ({ navigation }) => {
           </Swiper>
         </View>
 
-        {/* <SafeAreaView style={{ flex: 1 }}>
-          <SlidingImageCarousel />
-        </SafeAreaView> */}
 
         {/* Bottom Section */}
         <Text style={styles.dai_sadana_style}>Daily Saadhana</Text>

@@ -1,16 +1,11 @@
 import { getAuthToken } from "../asyncStorage/getAuthToken";
 
-export const checkUserAuth = async ({ navigation }) => {
+export const checkUserAuth = async () => {
   try {
     const token = await getAuthToken();
-    if (token) {
-      if (navigation && typeof navigation.replace === 'function') {
-        navigation.replace('Home');
-      } else {
-        console.error("Navigation is not defined or doesn't have a 'replace' method.");
-      }
-    }
+    return !!token; // Returns true if token exists, false otherwise
   } catch (error) {
-    console.error('Error in checkUserAuth:', error);
+    console.error("Error in checkUserAuth:", error);
+    return false; // Default to false on error
   }
 };
