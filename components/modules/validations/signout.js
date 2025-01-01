@@ -1,32 +1,28 @@
-import auth from '@react-native-firebase/auth'
+import auth from '@react-native-firebase/auth';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
+export const signout = async ({navigation}) => {
+  try {
+    const user = auth().currentUser;
+    // console.log(user);
+    if (user) {
+      await auth().signOut();
+      await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+      await AsyncStorage.removeItem('authToken');
+      await AsyncStorage.removeItem('userinfo');
+      await AsyncStorage.clear(); 
 
-export const signout = async (navigation) => {
-    try {
-      console.log("hello")
-
-      const user = auth().currentUser
-      if (user) {
-        await auth().signOut()
-        await GoogleSignin.revokeAccess()
-        await GoogleSignin.signOut()
-        await AsyncStorage.removeItem('authToken')
-        await AsyncStorage.removeItem('userinfo')
-        navigation.replace('Login')
-
-        navigation.reset({
-          index:0,
-          routes:[{name:'Login'}]
-        })
-      }
-      else {
-        console.log('error')
-      }
+      const token = await AsyncStorage.getItem('authToken');
+      console.log('Token after signout:', token);
+      // setIsLoggedIn(false)
+      // Replacing the current route with the Login screen
+      navigation.replace('Login');
+    } else {
+      console.error('No user logged in');
     }
-    catch (error) {
-      console.log(error)
-    }
+  } catch (error) {
+    console.error(error);
   }
-
+}

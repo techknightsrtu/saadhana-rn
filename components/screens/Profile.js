@@ -8,7 +8,8 @@ import styles from '../assets/styles/stylesProfile';
 
 
 const Profile = ({ navigation }) => { 
-
+  
+  
   useEffect(() => {
     fetchuserinfo(setuserinfo_)
   }, [])
@@ -86,7 +87,7 @@ const Profile = ({ navigation }) => {
           </View>
 
           {/* signout button */}
-            <TouchableOpacity onPress={() => signout(navigation)}>
+            <TouchableOpacity onPress={() => signout({navigation})}>
           <View style={styles.signout}>
             <Text style={{ color: '#fff8f1', fontWeight: 'bold' }} >Sign Out</Text>
           </View>

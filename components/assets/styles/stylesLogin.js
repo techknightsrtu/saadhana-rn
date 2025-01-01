@@ -6,6 +6,15 @@ const styles = StyleSheet.create({
       marginBottom: 100,
       marginTop:100
     },
+    container: {
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    image: {
+      width: 150,
+      height: 150,
+    },
     google_style: {
       color: '#b57f6a',
       fontSize: 20,

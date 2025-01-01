@@ -15,6 +15,7 @@ import { checkUserAuth } from '../modules/validations/userAuthExisting';
 import { useEffect, useState } from 'react';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { View, ActivityIndicator } from "react-native";
+import { combineSlices } from "@reduxjs/toolkit";
 
 const Stack = createStackNavigator()
 
@@ -22,20 +23,23 @@ const AppNavigator = () => {
 
   const [isLoggedIn, setIsLoggedIn] = useState(null); // `null` means loading
 
-  useEffect(() => {
-    // Configure Google Sign-In
-    GoogleSignin.configure({
-      webClientId: GOOGLE_WEB_CLIENT_ID,
-    });
 
-    // Check user authentication
-    const authenticateUser = async () => {
-      const userAuthenticated = await checkUserAuth(); // Returns true or false
-      setIsLoggedIn(userAuthenticated); // Set auth state
-    };
 
-    authenticateUser();
-  }, []);
+    useEffect(() => {
+      // Configure Google Sign-In
+      GoogleSignin.configure({
+        webClientId: GOOGLE_WEB_CLIENT_ID,
+      });
+  
+      // Check user authentication
+      const authenticateUser = async () => {
+        const userAuthenticated = await checkUserAuth(); // Returns true or false
+        setIsLoggedIn(userAuthenticated); // Set auth state
+      };
+  
+      authenticateUser();
+    }, []);
+
 
   if (isLoggedIn === null) {
     return (
@@ -52,9 +56,9 @@ const AppNavigator = () => {
 
       {isLoggedIn ? (
         <Stack.Screen options={{ headerShown: false, }} name="Home" component={Home} />
-      ) : (
-        <Stack.Screen options={{ headerShown: false, }} name="Login" component={Login} />
+      ) : (null
       )}
+      <Stack.Screen options={{ headerShown: false, }} name="Login" component={Login} initialParams={{ setIsLoggedIn }} />
 
       <Stack.Screen options={{
         headerTitle: 'My Profile',
