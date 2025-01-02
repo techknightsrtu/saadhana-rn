@@ -18,7 +18,7 @@ import SaadhanaBoxes from '../component/ReviewSaadhana/SaadhanaBoxes';
 const Review_saadhana = () => {
 
     const [authorization, setauthorization] = useState(false)
-    const [isLoading, setisLoading] = useState(true)
+    // const [isLoading, setisLoading] = useState(true)
 
 
     useEffect(() => {
@@ -35,13 +35,14 @@ const Review_saadhana = () => {
         const [studentdata, setstudentdata] = useState(null)
         const [name, setname] = useState('')
         const [modalVisible, setmodalVisible] = useState(false)
-        
+        console.log(name)
         useEffect(() => {
             const fetchData = async () => {
                 try {
 
                     let name= await fetchNameUnderStudent( {userId} )
                     setname(name)
+
                     if (studentname && selectedDate) {
                         data=await fetchStudentSaadhana({ userId, selectedDate })
                         setstudentdata(data)
@@ -49,9 +50,7 @@ const Review_saadhana = () => {
 
                 } catch (error) {
                     console.error(error)
-                } finally {
-                    setisLoading(false)
-                }
+                } 
             }
                 fetchData()
             }, [studentname, selectedDate])
