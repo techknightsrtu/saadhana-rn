@@ -28,4 +28,4 @@ const RecordSaadhanaSlice=createSlice({
 })
 
 export const {setWeekDates,setSaadhanaDates,setSaadhanaStatus, setSaadhanaData}=RecordSaadhanaSlice.actions
-export  default RecordSaadhanaSlice.reducer
+export default RecordSaadhanaSlice.reducer

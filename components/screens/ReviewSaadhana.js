@@ -14,6 +14,9 @@ import { add_student_counsellor } from '../modules/firebase/setStudentCounsellor
 import { fetchStudentSaadhana } from '../modules/firebase/fetchStudentSaadhana';
 import { fetchNameUnderStudent } from '../modules/firebase/fetchNameUnderStudent';
 import SaadhanaBoxes from '../component/ReviewSaadhana/SaadhanaBoxes';
+import { useDispatch, useSelector } from 'react-redux';
+import { setSaadhanaData, setuserName } from '../app/slices/ReviewSaadhanaSlice';
+// import { setuserName } from '../app/slices/ReviewSaadhanaSlice';
 
 const Review_saadhana = () => {
 
@@ -32,33 +35,38 @@ const Review_saadhana = () => {
 
 
     const StudentComponent = ({ studentname, userId }) => {
-        const [studentdata, setstudentdata] = useState(null)
+        // const [studentdata, setstudentdata] = useState(null)
         const [name, setname] = useState('')
         const [modalVisible, setmodalVisible] = useState(false)
-        console.log(name)
+        const dispatch = useDispatch()
+        const studentdata = useSelector(state => state.ReviewSaadhana.saadhanaData[userId])
+        const userName=useSelector(state=>state.ReviewSaadhana.userName[userId])
+        
         useEffect(() => {
             const fetchData = async () => {
                 try {
 
-                    let name= await fetchNameUnderStudent( {userId} )
-                    setname(name)
+                    let name = await fetchNameUnderStudent({ userId })
+                    // setname(name)
+                    dispatch(setuserName({userId,name}))
 
                     if (studentname && selectedDate) {
-                        data=await fetchStudentSaadhana({ userId, selectedDate })
-                        setstudentdata(data)
+                        data = await fetchStudentSaadhana({ userId, selectedDate })
+                        dispatch(setSaadhanaData({userId,data}))
                     }
 
                 } catch (error) {
                     console.error(error)
-                } 
+                }
             }
-                fetchData()
-            }, [studentname, selectedDate])
-// console.log(studentdata)
-            
+            fetchData()
+        }, [studentname, selectedDate,userId,dispatch])
+        
+
 
         return (
-            <SaadhanaBoxes studentdata={studentdata} name={name} setmodalVisible={setmodalVisible} modalVisible={modalVisible} userId={userId} selectedDate={selectedDate} />
+            <SaadhanaBoxes studentdata={studentdata} userName={userName} setmodalVisible={setmodalVisible} modalVisible={modalVisible} userId={userId} selectedDate={selectedDate} />
+
         )
 
     }

@@ -3,14 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, TextInput, Alert, Modal } from 'react-native';
 import { handleFeedback } from '../../modules/firebase/SaveFeedback';
 
-const SaadhanaBoxes = ({ studentdata, name, setmodalVisible, modalVisible, UserId, selectedDate }) => {
+const SaadhanaBoxes = ({ studentdata, userName, setmodalVisible, modalVisible, UserId, selectedDate }) => {
     console.log(studentdata)
     const [Feedback, setFeedback] = useState("")
     if (!studentdata || Object.keys(studentdata).length === 0) {
         return (
             <View style={styles.noSadhanaBox}>
 
-                <Text style={{ color: 'black', padding: 10 }}>{name} has not filled saadhana of {selectedDate}</Text>
+                <Text style={{ color: 'black', padding: 10 }}>{userName} has not filled saadhana of {selectedDate}</Text>
 
             </View>
         );
@@ -26,7 +26,7 @@ const SaadhanaBoxes = ({ studentdata, name, setmodalVisible, modalVisible, UserI
                 <View style={{ padding: 10 }}>
                     <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginHorizontal: 10 }}>
                         <View style={{ flexDirection: 'column' }}>
-                            <Text style={{ color: 'black', textAlign: 'left', fontSize: 16, fontWeight: 'bold' }}>{name}</Text>
+                            <Text style={{ color: 'black', textAlign: 'left', fontSize: 16, fontWeight: 'bold' }}>{userName}</Text>
                             <Text style={{ color: '#b0b0b0', textAlign: 'left', fontSize: 10 }}>{studentdata.date}</Text>
                         </View>
                         <View style={{ height: 23, width: 35, borderRadius: 15, backgroundColor: '#34206a', justifyContent: 'center', alignItems: 'center' }}>
