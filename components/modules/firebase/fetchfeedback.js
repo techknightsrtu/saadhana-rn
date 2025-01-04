@@ -4,27 +4,25 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 import  {fetchCurrUserId} from './fetchCurrUserId'
 
-export const fetchFeedback = async ({setfeedback}) => {
+export const fetchFeedback = async () => {
     try {
         
         const data=await fetchCurrUserId()
-
         const messageRef = firestore().collection('users').doc(data.userId).collection('Messages')
         // console.log(messageRef)
 
         const snapshot = await messageRef.get()
-        const messsageArray = []
+        const messageArray = []
 
         snapshot.forEach(doc => {
             const data = doc.data()
-            messsageArray.push({
+            messageArray.push({
                 id: doc.id,
                 ...data
             })
         })
 
-        setfeedback(messsageArray)
-        // console.log(messsageArray)
+        return messageArray
 
     } catch (error) {
         console.log(error)

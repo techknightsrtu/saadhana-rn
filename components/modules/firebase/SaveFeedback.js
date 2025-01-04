@@ -1,13 +1,11 @@
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
-export const handleFeedback = ({studentid,studentdata,Feedback,setFeedback,setmodalVisible}) => {
-    // console.log(studentid)
-    // console.log(studentdata.date)
+export const handleFeedback = ({userId,studentdata,Feedback,setFeedback,setmodalVisible}) => {
     try {
         firestore()
             .collection('users')
-            .doc(studentid)
+            .doc(userId)
             .collection('Messages')
             .doc(studentdata.date)
             .set({

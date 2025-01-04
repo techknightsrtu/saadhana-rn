@@ -35,8 +35,6 @@ const Review_saadhana = () => {
 
 
     const StudentComponent = ({ studentname, userId }) => {
-        // const [studentdata, setstudentdata] = useState(null)
-        const [name, setname] = useState('')
         const [modalVisible, setmodalVisible] = useState(false)
         const dispatch = useDispatch()
         const studentdata = useSelector(state => state.ReviewSaadhana.saadhanaData[userId])

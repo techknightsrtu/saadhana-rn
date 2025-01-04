@@ -41,10 +41,17 @@ const Home = ({ navigation }) => {
 
 
   useEffect(() => {
+    const setuserinfo = async () => {
     checkuseraccess(setshowbutton)
     fetchuserinfo(setuserinfo_).then(() => setisloading(false))
-    fetchFeedback({setfeedback})
+
+    let feedback= await fetchFeedback()
+    setfeedback(feedback)
+    }
+    setuserinfo()
+
   }, [])
+  console.log("your feeback",feedback)
 
 
   // google profile photo

@@ -3,8 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { View, TouchableOpacity, Text, StyleSheet, TextInput, Alert, Modal } from 'react-native';
 import { handleFeedback } from '../../modules/firebase/SaveFeedback';
 
-const SaadhanaBoxes = ({ studentdata, userName, setmodalVisible, modalVisible, UserId, selectedDate }) => {
-    console.log(studentdata)
+const SaadhanaBoxes = ({ studentdata, userName, setmodalVisible, modalVisible, userId, selectedDate }) => {
     const [Feedback, setFeedback] = useState("")
     if (!studentdata || Object.keys(studentdata).length === 0) {
         return (
@@ -103,16 +102,16 @@ const SaadhanaBoxes = ({ studentdata, userName, setmodalVisible, modalVisible, U
                                 <View style={styles.modalView}>
                                     <Text style={{ color: 'black', fontWeight: 'bold', fontSize: 18, marginBottom: 15 }}>Send your Feedback</Text>
                                     <TextInput
-                                        style={styles.feedbackBox} placeholder='type your name here'
+                                        style={styles.feedbackBox} placeholder='type your feedback here'
                                         onChangeText={newtext => setFeedback(newtext)}
                                         defaultValue={Feedback}
                                         multiline
-                                    />
+                                    /> 
                                     <View style={{ flexDirection: 'row', justifyContent: 'flex-end' }}>
                                         <TouchableOpacity style={styles.add_cancel} onPress={() => setmodalVisible(false)}>
                                             <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>Cancel</Text>
                                         </TouchableOpacity>
-                                        <TouchableOpacity style={styles.add_cancel} onPress={() => handleFeedback({ UserId, studentdata, Feedback, setFeedback, setmodalVisible })}>
+                                        <TouchableOpacity style={styles.add_cancel} onPress={() => handleFeedback({ userId, studentdata, Feedback, setFeedback, setmodalVisible })}>
                                             <Text style={{ color: 'white', fontSize: 15, fontWeight: 'bold' }}>Send</Text>
                                         </TouchableOpacity>
                                     </View>
