@@ -1,37 +1,33 @@
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
-export const fetchStudentSaadhana=async({userId, selectedDate})=>{
+export const fetchStudentSaadhana = async ({ userId, selectedDate }) => {
 
-    // const userId = studentid
-    console.log(userId)
-    // console.log('hi')
-        try {
-            const user = auth().currentUser
-            if (!user) {
-                console.log('no user signed in')
-                return
-            }
+    try {
+        const user = auth().currentUser
+        if (!user) {
+            console.log('no user signed in')
+            return
+        }
 
-            const saadhanaDoc = await firestore()
-                .collection('users')
-                .doc(userId)
-                .collection('Saadhana')
-                .doc(selectedDate)
-                .get()            
+        const saadhanaDoc = await firestore()
+            .collection('users')
+            .doc(userId)
+            .collection('Saadhana')
+            .doc(selectedDate)
+            .get()
 
-            if (saadhanaDoc.exists) {
-                // console.log(saadhanaDoc.data())
-                return (saadhanaDoc.data())                
+        if (saadhanaDoc.exists) {
+            return (saadhanaDoc.data())
 
-            } else {
-                console.log('no data')
-                return {}
-            }
-
-        } catch (error) {
-            console.log(error)
+        } else {
+            console.log('no data')
             return {}
         }
-    
+
+    } catch (error) {
+        console.log(error)
+        return {}
+    }
+
 }

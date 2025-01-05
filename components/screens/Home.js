@@ -21,8 +21,8 @@ import { checkuseraccess } from '../modules/firebase/fetchuseraccess';
 import { fetchFeedback } from '../modules/firebase/fetchfeedback';
 import { deleteFeedback } from '../modules/firebase/deleteFeedback';
 import { useDispatch, useSelector } from 'react-redux';
-// import { setUser } from '../../app/Slices/authSlice'; 
-import { setUser } from '../app/Slices/authSlice';
+import { setFeedbackData } from '../app/slices/FeedbackSlice';
+
 
 const Home = ({ navigation }) => {
 
@@ -31,27 +31,29 @@ const Home = ({ navigation }) => {
   const [showbutton, setshowbutton] = useState(false)
   // modal pop up view 
   const [modalVisible, setmodalVisible] = useState(false)
-  const [feedback, setfeedback] = useState([])
+  const dispatch = useDispatch()
+  const feedbackData = useSelector((state) => state.Feedback.feedbackData)
 
   const toggleModal = () => {
     setmodalVisible(!modalVisible)
     // function to delete feedback once opened and then close
-    deleteFeedback()
+    // deleteFeedback({dispatch})
   }
 
 
   useEffect(() => {
     const setuserinfo = async () => {
-    checkuseraccess(setshowbutton)
-    fetchuserinfo(setuserinfo_).then(() => setisloading(false))
+      checkuseraccess(setshowbutton)
+      fetchuserinfo(setuserinfo_).then(() => setisloading(false))
 
-    let feedback= await fetchFeedback()
-    setfeedback(feedback)
+
+      let feedback = await fetchFeedback()
+      dispatch(setFeedbackData(feedback))
+
     }
     setuserinfo()
 
   }, [])
-  console.log("your feeback",feedback)
 
 
   // google profile photo
@@ -78,8 +80,8 @@ const Home = ({ navigation }) => {
         break
     }
   }
- 
- 
+
+
   const handleProfileNavigation = () => {
     navigation.navigate('Profile')
   }
@@ -110,8 +112,8 @@ const Home = ({ navigation }) => {
               <View style={styles.popup}>
 
                 <Text style={styles.popupText}>Your Messages!</Text>
-                {feedback.length > 0 ? (
-                  feedback.map((message) => (
+                {feedbackData.length > 0 ? (
+                  feedbackData.map((message) => (
 
                     <View key={message.id}>
                       <View style={styles.msg_box}>
@@ -126,7 +128,7 @@ const Home = ({ navigation }) => {
                   <Text style={styles.popupText}>No Messages Found!</Text>
                 )}
 
-                <TouchableOpacity style={styles.cancel_button} onPress={()=>{toggleModal(),deleteFeedback({setfeedback})}}>
+                <TouchableOpacity style={styles.cancel_button} onPress={() => { toggleModal(), deleteFeedback({ dispatch }) }}>
                   <Text style={styles.closeText}>Close</Text>
                 </TouchableOpacity>
               </View>

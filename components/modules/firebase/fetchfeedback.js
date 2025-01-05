@@ -1,7 +1,6 @@
 // this is for fetching ALL messages given by its counsellor to show them on notifiation menu
 
 import firestore from '@react-native-firebase/firestore';
-import auth from '@react-native-firebase/auth';
 import  {fetchCurrUserId} from './fetchCurrUserId'
 
 export const fetchFeedback = async () => {
@@ -9,7 +8,6 @@ export const fetchFeedback = async () => {
         
         const data=await fetchCurrUserId()
         const messageRef = firestore().collection('users').doc(data.userId).collection('Messages')
-        // console.log(messageRef)
 
         const snapshot = await messageRef.get()
         const messageArray = []
