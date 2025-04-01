@@ -2,7 +2,7 @@ import firebase from '@react-native-firebase/app';
 import firestore from '@react-native-firebase/firestore';
 import { fetchCurrUserId } from './fetchCurrUserId';
 
-export const fetchData = async ({setdata,setlabels,setisLoading}) => {
+export const fetchData = async () => {
     try {
         const data= await fetchCurrUserId()
 
@@ -33,10 +33,8 @@ export const fetchData = async ({setdata,setlabels,setisLoading}) => {
                 });
 
                 if (dates.length > 0 && scores.length > 0) {
-                    setlabels([...dates]);  
-                    setdata([...scores]); 
-                    setisLoading(false)
-
+                    console.log('Data fetched successfully:', dates, scores);
+                    return {dates,scores}
                 }
             }
         } else {

@@ -1,10 +1,11 @@
 import { Dimensions, View, Text } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 
-const GraphOfScore=({labels,data})=>{
+const GraphOfScore=({ labels = [], data = [] })=>{
     return(
         <View>
-        {labels.length>0 && data.length>0?(<LineChart
+        {labels.length>0 && data.length>0?(
+            <LineChart
             data={{
                 labels:labels,
                 datasets: [
