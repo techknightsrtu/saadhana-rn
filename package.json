@@ -25,7 +25,11 @@
     "@react-navigation/stack": "^6.4.1",
     "@reduxjs/toolkit": "^2.3.0",
     "fbjs": "^3.0.5",
+<<<<<<< HEAD
     "lottie-react-native": "^7.2.1",
+=======
+    "moment": "^2.30.1",
+>>>>>>> 19efcd59467af0b8196658121b4b826237a2e3f2
     "react": "18.2.0",
     "react-native": "0.74.5",
     "react-native-chart-kit": "^6.12.0",

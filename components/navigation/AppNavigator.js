@@ -10,6 +10,7 @@ import Record_saadhana from '../screens/RecordSaadhana';
 import RecordComSaadhana from "../screens/RecordComSaadhana";
 import Saadhana_report from "../screens/SaadhanaReport";
 import Review_saadhana from '../screens/ReviewSaadhana';
+import UserDetail from "../screens/UserDetail";
 import { GOOGLE_WEB_CLIENT_ID } from '@env';
 import { checkUserAuth } from '../modules/validations/userAuthExisting';
 import { useEffect, useState } from 'react';
@@ -140,6 +141,16 @@ const AppNavigator = () => {
         headerTitleAlign: 'center'
 
       }} name="Review_saadhana" component={Review_saadhana} />
+
+<Stack.Screen options={{
+        headerTitle: 'Devotee Detail',
+        headerStyle: { backgroundColor: '#e59479' },
+        headerTintColor: 'white',
+        headerShadowVisible: false,
+        headerTitleStyle: { fontSize: 20 },
+        headerTitleAlign: 'center'
+      }}
+        name="UserDetail" component={UserDetail} />
 
 
     </Stack.Navigator>

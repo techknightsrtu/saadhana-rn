@@ -37,11 +37,27 @@ const Profile = ({ navigation }) => {
         <View style={{  alignItems: 'center', backgroundColor: '#f9eae3', borderRadius: 25 }}>
 
           {/* google image , name and email */}
+          <View>
+            <View style={{flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        width: '60%',
+        marginBottom: 20}}>
           <View style={{ alignItems: 'center' }}>
             <Image style={styles.logo}
               source={{ uri: userphoto }} />
+            
             <Text style={styles.name}>{username}</Text>
             <Text style={styles.email}>{useremail}</Text>
+            {/* </View> */}
+          </View>
+          <View style={{alignItems: 'center',marginHorizontal:20}}>
+          <TouchableOpacity onPress={() => navigation.navigate('UserDetail')} style={{backgroundColor:'white',height:50,width:50,justifyContent:'center',alignItems:'center',borderRadius:25}}>
+            <Image style={{height:30,width:30,padding:10,margin:10}} source={require('../assets/images/add.png')} />
+          </TouchableOpacity >
+          <Text style={{color:'black',fontWeight:'bold',margin:2}}>Add Details</Text>
+          </View>
+          </View>
           </View>
 
           {/* feedback boxes */}

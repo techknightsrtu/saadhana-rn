@@ -32,6 +32,7 @@
 import React, { useEffect, useState } from 'react';
 import { Animated, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
+<<<<<<< HEAD
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -39,12 +40,17 @@ import { LogBox } from 'react-native';
 import AppNavigator from './components/navigation/AppNavigator';
 import SplashScreen from './components/screens/SplashScreen'; // Lottie splash screen
 import { GOOGLE_WEB_CLIENT_ID } from '@env';
+=======
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { LogBox } from 'react-native';
+import AppNavigator from './components/navigation/AppNavigator';
+>>>>>>> 19efcd59467af0b8196658121b4b826237a2e3f2
 import { Provider } from 'react-redux';
 import store from './components/app/store';
-import { checkUserAuth } from './components/modules/validations/userAuthExisting';
 
 LogBox.ignoreAllLogs();
 
+<<<<<<< HEAD
 const Stack = createNativeStackNavigator();
 
 const App = () => {
@@ -63,6 +69,9 @@ const App = () => {
 
     return () => clearTimeout(timer);
   }, []);
+=======
+const App = ({navigation}) => {
+>>>>>>> 19efcd59467af0b8196658121b4b826237a2e3f2
 
   return (
     <Provider store={store}>

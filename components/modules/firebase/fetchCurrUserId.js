@@ -13,6 +13,7 @@ export const fetchCurrUserId=async()=>{
         if (!querySnapshot.empty) {
             const userdoc = querySnapshot.docs[0]
             const userdata = userdoc.data()
+            console.log(userdata)
             return userdata
 
         } else {
