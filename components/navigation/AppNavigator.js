@@ -29,8 +29,9 @@ const AppNavigator = () => {
       // Configure Google Sign-In
       GoogleSignin.configure({
         webClientId: GOOGLE_WEB_CLIENT_ID,
+        
       });
-  
+      console.log(GOOGLE_WEB_CLIENT_ID)
       // Check user authentication
       const authenticateUser = async () => {
         const userAuthenticated = await checkUserAuth(); // Returns true or false
